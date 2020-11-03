@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://cdn.ckeditor.com/4.6.0/full-all/ckeditor.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row row-cols-1 mt-5 danhsach w-50 mx-auto" id="update">
+            <div class="col">
+                <h1 class="my-5 text-center ">Sửa Category</h1>
+                <div class="card-mx-auto bg-gradient-primary px-5 pb-3 pt-2  border rounded">
+                    <form method="POST" action="/admin/category/update/{{category.id}}" class="p-5 form-inline">
+                        <div class="form-group ">
+                            <label for="id" class="h6 mr-4">Id Tag:</label>
+                            <input class="form-controlt w-auto" type="text" value="{{category.id}}" id="id" name="id"
+                                readonly>
+                        </div>
+                        <div class="form-group my-4">
+                            <label for="tag" class="h6 mr-3">Tên Category:</label>
+                            <input type="text" class="form-control w-auto" id="category" name="category"
+                                value="{{category.cate_name}}">
+                        </div>
+                        <div class="form-group position-relative">
+                            <button type="submit" class="btn btn-primary my-3 ml-4 position-absolute"
+                                style="top: 15px;left:-222px;">Lưu</button>
+                            <a class="btn btn-primary position-absolute" href="../" role="button"
+                                style="top:31px;left:-130px;">Quay Lại</a>
+                        </div>
+                        {{!-- <textarea class="form-group" id='editor' name='editor'></textarea> --}}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="test"></div>
+    <script type="text/javascript">
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: '../../uploader'
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $('#send').click(function () {
+            var value = CKEDITOR.instances['editor'].getData();
+            $("textarea#editor").val(value);
+            var htmlObject = $(value);
+            $("div#test").html(value);
+        });
+        function callme() {
+            return htmlObject;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!-- ##### Header Area Start ##### -->
+<header class="header-area">
+    <!-- Top Header Area -->
+    <div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="top-header-content d-flex align-items-center justify-content-between">
+                        <!-- Search Form -->
+                        <div class="search-form">
+                            <form action="#" method="get">
+                                <input type="search" name="search" class="form-control"
+                                    placeholder="Search and hit enter...">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logo Area -->
+    <div class="logo-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Nav brand -->
+                    <a href="/" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Area -->
+    <div class="foode-main-menu">
+        <div class="classy-nav-container breakpoint-off">
+            <div class="container">
+                <!-- Menu -->
+                <nav class="classy-navbar" id="foodeNav">
+
+                    <!-- Nav brand -->
+                    <a href="/" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+                        <!-- close btn -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="#">Categories</a>
+                                    <ul class="dropdown">
+                                        <li><a href="/">Home</a></li>
+                                        <li><a href="archive-blog.html">Archive Blog</a></li>
+                                        <li><a href="single-post.html">Single Post</a></li>
+                                        <li><a href="about-us.html">About</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="typography.html">Typography</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/about">About</a></li>
+                                <li><a href="/contact">Contact</a></li>
+                                {{#if user}}
+                                <li><a href="/user/logout">Logout</a></li>
+                                <li><a href="/user/profile">Profile</a></li>
+                                {{else}}
+                                <li><a href="/user/login">Login</a></li>
+                                {{/if}}
+                            </ul>
+
+                        </div>
+                        <!-- Nav End -->
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ##### Header Area End ##### -->
