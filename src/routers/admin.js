@@ -46,7 +46,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 router.get('/user/delete/:id',adminController.delUser);
-// router.get('/thongke/baiviet',adminController.thongkebaiviet);
+router.get('/thongke/baiviet',adminController.thongkebaiviet);
 router.get('/user',adminController.user);
 router.get('/post',adminController.post);
 router.get('/comment',adminController.comment);

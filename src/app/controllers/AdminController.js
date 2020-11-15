@@ -4,8 +4,8 @@ const categoryModel = require('../../models/category.model');
 const userModel = require('../../models/user.model');
 const postModel = require('../../models/post.model');
 const commentModel = require('../../models/comment.model');
-const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
+var fastcsv = require("fast-csv");
 Handlebars.registerHelper('isNull',function(updated_at){
     if (updated_at === null)
         return true;
@@ -241,32 +241,25 @@ class AdminControllers {
         req.flash('success','Xóa Thành Công ');
         res.redirect('back');
     }
-    // async thongkebaiviet(req, res){
-    //     const post = await postModel.findCatName();
-    //     const jsonData = JSON.parse(JSON.stringify(post));
-    //     console.log(jsonData)
-    //     const csvWriter = createCsvWriter({
-    //         path: "D:\ThongKe\ThongKeBaiViet.csv",
-    //         header: [
-    //           { id: "id", title: "id" },
-    //           { id: "name_post", title: "Tên Bài Viết" },
-    //           { id: "cate_name", title: "Loại Danh Mục" },
-    //           { id: "title", title: "Mô Tả Ngắn" },
-    //           { id: "content", title: "Nội Dung" },
-    //           { id: "created_at", title: "Ngày tạo" },
-    //           { id: "updated_at", title: "Ngày Cập Nhật" }
-    //         ]
-    //     });
-    //     csvWriter
-    //         .writeRecords(jsonData)
-    //         .then(() => {
-    //             console.log("Write to bezkoder_mysql_csvWriter.csv successfully!");
-    //             res.redirect('back');
-    //         }
-                
-    //     );
-
-    // }
+    async thongkebaiviet(req, res){
+        const post = await postModel.findCatName();
+        post.forEach(element => {
+            let date = element.created_at.getDate();
+            let month = element.created_at.getMonth() + 1;
+            let year = element.created_at.getFullYear();
+            element.created_at = date + "-" + month + "-" +year;
+            console.log(element.created_at);
+        });
+        const jsonData = JSON.parse(JSON.stringify(post));
+        var ws = fs.createWriteStream("D:\\Blog-Nodejs-Express-Mysql\\src\\public\\data.csv");
+        fastcsv
+            .write(jsonData, { headers: true })
+            .on("finish", function() {
+ 
+                res.send("<a href='/data.csv' download='data.csv' id='download-link'></a><script>document.getElementById('download-link').click();</script>");
+            })
+            .pipe(ws);
+    }
 }
 
 module.exports = new AdminControllers();
