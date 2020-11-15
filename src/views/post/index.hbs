@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-lg main">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-5"
+            style="  background: linear-gradient(to right, #5d4157, #a8caba); ">
+            <a href="/admin" class="navbar-brand">Trang Quản Trị</a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item ">
+                        <a href="/admin" class="nav-link">Người Dùng</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/admin/post" class="nav-link">Bài Viết</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="/admin/category" class="nav-link">Danh Mục</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="/admin/comment" class="nav-link">Bình Luận</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item text-light mr-3 nav-link">Xin Chào Admin</li>
+                    <li class="nav-item"><a href="/admin/logout"><i
+                                class="fas fa-sign-out-alt btn btn-secondary nav-link"></i></a></li>
+
+                </ul>
+            </div>
+        </nav>
+
+        {{#if success}}
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{success}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span arial-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+        <div class="container-fluid">
+            <div class="card-mx-auto danhsach">
+                <h1 class="text-center my-5">DANH SÁCH CÁC BÀI VIẾT</h1>
+                <div class="text-right mb-1">
+                    <button type="button" class="px-4 btn btn-primary " data-toggle="modal" data-target="#addPost"><i
+                            class="fas fa-plus"></i></a>
+                </div>
+                <div class="table-responsive w-100">
+                    <table class="table table-bordered table-hover text-center text-capitalize  ">
+                        <thead class="table-info">
+                            <tr>
+                                <th scope="col">Tên Post</th>
+                                <th scope="col">Loại Post</th>
+                                <th scope="col">Ngày Tạo</th>
+                                <th scope="col">Ngày Cập Nhật</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Hình Ảnh</th>
+                                <th scope="col">Nội Dung</th>
+                                <th scope="col">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each post}}
+                            <tr>
+                                <td>{{this.name_post}}</td>
+                                <td>{{this.cate_name}}</td>
+                                <td>{{timeago this.created_at}}</td>
+                                {{#if (isNull this.updated_at)}}
+                                <td>Chưa Cập Nhật</td>
+                                {{else}}
+                                <td>{{timeago this.updated_at}} </td>
+                                {{/if}}
+                                <td style="max-width: 150px;max-height:150px">{{this.title}}</td>
+                                <td><img src="/uploads/img_titles/{{this.image}}" alt="" class="img-fluid w-75"
+                                        style="max-width: 150px" ;></td>
+                                <td class="mh-25 text-truncate " style="max-width: 150px">{{this.content}}</td>
+                                <td>
+                                    <a href="/admin/post/delete/{{this.id}}" class="mx-4 btn btn-primary"><i
+                                            class="far fa-trash-alt"></i></a>
+                                    <a href="/admin/post/update/{{this.id}}" class="mx-4 btn btn-danger"><i
+                                            class="far fa-edit"></i></a></td>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal" id="addPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenteredLabel">Thêm Bài Viết</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-mx-auto">
+                            <form method="POST" action="/admin/post/add" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="category">Tên Bài Viết</label>
+                                    <input type="text" class="form-control" id="name_post" name="name_post"
+                                        placeholder="nhập tên bài viết" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Loại Danh Mục</label>
+                                    <select class="custom-select" id="custom-select" name="cate" required>
+                                        {{#each lcCategory}}
+                                        <option value="{{this.id}}">{{this.cate_name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Mô Tả Ngắn</label>
+                                    <input type="text" class="form-control" id="title" name="title"
+                                        placeholder="Nhập mô tả ngắn" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Hình Ảnh</label>
+                                    <input type="file" class="form-control" id="file" name="image" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Nội Dung</label>
+                                    <textarea class="form-control" id='content' name='content' required></textarea>
+                                </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" formaction="/admin/post/add">Thêm</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

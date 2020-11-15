@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Profile</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
@@ -23,7 +23,7 @@
             <div class="container">
                 <div class="signup-content">
                     <div class="signup-form">
-                        <h2 class="form-title">Your Profile</h2>
+                        <h2 class="form-title">Thông Tin Tài Khoản</h2>
                             {{#if user}}
                             <form method="GET" class="register-form" id="register-form" action="../../user/changeEmail/{{user.id}}">
                                 <div class="form-group">
@@ -36,13 +36,9 @@
                                     <input type="email" name="email" id="email" placeholder="Your Email"
                                         value="{{user.email}}" />
                                 </div>
-                                <div class="form-group">
-                                    <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                    <input type="password" name="pass" id="pass" value="{{user.password}}"/>
-                                </div>
                                 <div class="form-group form-button">
                                     <input type="submit" name="updateEmail" id="updateEmail" class="form-submit" value="Đổi Email" />
-                                    <input type="submit" name="updatePass" id="updatePass" class="form-submit" value="Đổi Mật Khẩu" formaction="../../user/changePassword/{{users.id}}" />
+                                    <input type="submit" name="updatePass" id="updatePass" class="form-submit" value="Đổi Mật Khẩu" formaction="../../user/changePassword/{{user.id}}" />
                                 </div>
                             </form>
                             {{/if}}

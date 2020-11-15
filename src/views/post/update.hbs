@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">\
+    <script src="https://cdn.ckeditor.com/4.6.0/full-all/ckeditor.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        body {
+            background: linear-gradient(to right, #5d4157, #a8caba);
+        }
+
+
+        h1 {
+            font-weight: 700;
+            color: e9e9e9#;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container p-4 mt-5 ">
+        {{#if msg}}
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{msg}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span arial-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+        <h1 class="text-center">CẬP NHẬT BÀI VIẾT</h1>
+        <form method="POST" action="/admin/post/update/{{post.id}}" enctype="multipart/form-data"
+            class=" border rounded p-5">
+            <div class="form-group row">
+                <label for="name-post" class="col-sm-2 col-form-label">Tên Post:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name_post" name="name_post" value="{{post.name_post}}"
+                        required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="custom-select" class="col-sm-2 col-form-label">Loại Category: {{post.cate_name}}</label>
+                <div class="col-sm-10">
+                    <select class="custom-select" id="custom-select" name="cate_id" required>
+                        {{#each lcCategory}}
+                        <option value="{{this.id}}">{{this.cate_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label">Tên Title:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" name="title" value="{{post.title}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="file" class="col-sm-2 col-form-label">Hình ảnh:</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control form-control-file" id="file" name="image">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="editor" class="col-sm-2 col-form-label">Nội dung:</label>
+                <div class="col-sm-10">
+                    <textarea rows="10" class="form-control" id='content' name='content'
+                        required>{{post.content}}</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
+                    <a class="btn btn-secondary " href="../" role="button">Quay Lại</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    {{!-- <script type="text/javascript">
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: '../uploader',
+
+        });
+    </script> --}}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

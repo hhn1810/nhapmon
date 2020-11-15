@@ -12,20 +12,24 @@
 
 <body>
 
-    <div class="container p-4">
-        
-        <div class="col-md-4">
-            <div class="card-mx-auto">
-                <form method="POST" action="/admin/category/add">
-                    <div class="form-group">
-                        <label for="category">Tên Category</label>
-                        <input type="text" class="form-control" id="category" name="category" placeholder="nhập tên Category">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
-                </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4 bg-danger">
+                <div class="card-mx-auto">
+                    <form method="POST" action="/admin/category/add">
+                        <div class="form-group">
+                            <label for="category">Tên Danh Mục</label>
+                            <input type="text" class="form-control" id="category" name="category"
+                                placeholder="nhập tên danh mục">
+                        </div>
+                        <div class="row justify-content-around">
+                            <button type="submit" class="btn btn-primary col-3">Thêm</button>
+                            <a href="#" class="btn btn-secondary col-3">Quay Lại</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

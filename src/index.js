@@ -8,13 +8,12 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const passport = require('passport');
-const validator = require('express-validator');
 // var multer  =   require('multer');
 // Khởi tạo express
 const app = express();
 require('./lib/passport');
 
-var  db= {
+const  db = {
     host: 'localhost',
     user: 'root',
     password: '',
@@ -53,16 +52,29 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
+const categoryModel = require('./models/category.model');
+const postModel = require('./models/post.model');
 // Khai báo các biến toàn cục
-app.use((req,res,next) => {
+app.use(async (req,res,next) => {
+    const lcCategory = await categoryModel.all();
+    const lcCatName = await postModel.findCatName();
+    const lcpostTang = await postModel.postTang();
+    const lcAllCateWithDetail = await categoryModel.allWithDetail();
+    res.locals.lcCategory = lcCategory;
+    res.locals.lcCatName = lcCatName;
+    res.locals.lcpostTang = lcpostTang;
+    res.locals.lcAllCateWithDetail = lcAllCateWithDetail;
+    if(req.user !== undefined)
+    {
+        delete req.user.password;
+        res.locals.lcuser = req.user;
+    }
     next();
 })
 
 
 app.use('/user',require('./routers/users'));
-app.use(require('./routers/posts'));
+app.use('/post',require('./routers/posts'));
 app.use('/admin',require('./routers/admin'));
 app.use('/',require('./routers/site'));
 // Public

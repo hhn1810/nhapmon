@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Đăng Nhập</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
@@ -23,25 +23,22 @@
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
-                        <a href="singup" class="signup-image-link">Create an account</a>
+                        <a href="signup" class="signup-image-link">Tạo Tài Khoản</a>
                     </div>
                     <div class="signin-form">
                         <h2 class="form-title">Đăng nhập</h2>
                         {{#if error}}
-                        <p style="padding: 8px; margin 8px" class="warning">{{error}}</p>
-                        {{/if}}
-                        {{#if message}}
-                            <p style="padding: 8px; margin 8px" class="warning">{{message}}</p>
+                        <p style="padding: 8px; margin 8px ;color: red ;" class="warning" >{{error}}</p>
                         {{/if}}
 
                         <form method="POST" class="register-form" id="login-form">
                             <div class="form-group">
                                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="username" placeholder="Nhập tài khoản"/>
+                                <input type="text" name="username" id="username" placeholder="Nhập tài khoản" required/>
                             </div>
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="password" placeholder="Nhập mật khẩu" />
+                                <input type="password" name="password" id="password" placeholder="Nhập mật khẩu"  required/>
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />

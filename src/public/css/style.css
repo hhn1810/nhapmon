@@ -35,6 +35,7 @@ Version: - v1.0.0
 */
 /* :: 1.0 Import Fonts */
 @import url("https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i|Poppins:300,300i,400,400i,500,500i,600,600i");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 /* :: 2.0 Import All CSS */
 @import url(bootstrap.min.css);
 @import url(classy-nav.css);
@@ -48,7 +49,7 @@ Version: - v1.0.0
   padding: 0; }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px; }
 
 h1,
@@ -63,7 +64,7 @@ h6 {
   font-family: "Merriweather", serif; }
 
 p {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #595959;
   font-size: 16px;
   line-height: 2;
@@ -79,7 +80,7 @@ a:focus {
   color: #191919;
   font-weight: 500;
   font-size: 14px;
-  font-family: "Poppins", sans-serif; }
+  font-family: "Roboto", sans-serif; }
 
 ul,
 ol {
@@ -462,7 +463,7 @@ img {
         .header-area .foode-main-menu .classynav ul li ul li a {
           padding: 0 30px; } }
     .header-area .foode-main-menu .classynav ul li .megamenu {
-      background-image: url(img/blog-img/1.jpg);
+      background-image: url(/img/blog-img/1.jpg);
       background-position: center center;
       background-size: cover; }
       .header-area .foode-main-menu .classynav ul li .megamenu .single-mega {
@@ -1051,15 +1052,6 @@ img {
   .comment_area .single_comment_area {
     position: relative;
     z-index: 1; }
-    .comment_area .single_comment_area::after {
-      position: absolute;
-      width: 1px;
-      height: 90%;
-      background-color: #ebebeb;
-      left: 100px;
-      top: 0;
-      z-index: 2;
-      content: ''; }
       @media only screen and (max-width: 767px) {
         .comment_area .single_comment_area::after {
           display: none; } }
@@ -1177,7 +1169,7 @@ img {
     .single-widget-area .widget-title::before {
       width: 100%;
       height: 14px;
-      background-image: url(img/core-img/widget-curve.png);
+      background-image: url(/img/core-img/widget-curve.png);
       background-position: center center;
       background-repeat: repeat;
       position: absolute;

@@ -14,11 +14,50 @@
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
+                        {{#if lcuser}}
+                        <div class="top-social-info">
+                            <a>{{lcuser.username}}</a>
+                            <a href="/user/logout">Đăng Xuất</a>
+                            <a href="/user/profile">Profile</a>
+                        </div>
+                        {{else}}
+                        <div class="top-social-info">
+                            <a href="/user/login">Đăng Nhập</a>
+                        </div>
+                        {{/if}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {{#if success}}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span arial-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    {{#if comment}}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{comment}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span arial-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
 
     <!-- Logo Area -->
     <div class="logo-area text-center">
@@ -26,7 +65,7 @@
             <div class="row">
                 <div class="col-12">
                     <!-- Nav brand -->
-                    <a href="/" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                    <a href="/" class="nav-brand"><img src="/img/core-img/logo.png" alt=""></a>
                 </div>
             </div>
         </div>
@@ -40,7 +79,7 @@
                 <nav class="classy-navbar" id="foodeNav">
 
                     <!-- Nav brand -->
-                    <a href="/" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                    <a href="/" class="nav-brand"><img src="/img/core-img/logo.png" alt=""></a>
 
                     <!-- Navbar Toggler -->
                     <div class="classy-navbar-toggler">
@@ -58,25 +97,18 @@
                         <!-- Nav Start -->
                         <div class="classynav">
                             <ul>
-                                <li><a href="/">Home</a></li>
-                                <li><a href="#">Categories</a>
+                                <li><a href="/">Trang Chủ</a></li>
+                                <li><a href="#">Danh Mục</a>
+                                   
                                     <ul class="dropdown">
-                                        <li><a href="/">Home</a></li>
-                                        <li><a href="archive-blog.html">Archive Blog</a></li>
-                                        <li><a href="single-post.html">Single Post</a></li>
-                                        <li><a href="about-us.html">About</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="typography.html">Typography</a></li>
+                                         {{#each lcCategory}}
+                                        <li><a href="/cate/{{this.slug}}">{{cate_name}}</a></li>
+                                        {{/each}}
                                     </ul>
+                                    
                                 </li>
-                                <li><a href="/about">About</a></li>
-                                <li><a href="/contact">Contact</a></li>
-                                {{#if user}}
-                                <li><a href="/user/logout">Logout</a></li>
-                                <li><a href="/user/profile">Profile</a></li>
-                                {{else}}
-                                <li><a href="/user/login">Login</a></li>
-                                {{/if}}
+                                <li><a href="/about">Thông Tin</a></li>
+                                <li><a href="/contact">Liên Lạc</a></li>
                             </ul>
 
                         </div>

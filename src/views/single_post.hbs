@@ -1,0 +1,152 @@
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <img src="img/core-img/breadcrumb-line.png" alt="">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i>Trang Chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{post.name_post}}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="blog-content-area section-padding-0-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Blog Posts Area -->
+            <div class="col-12 col-lg-8">
+                <div class="blog-posts-area">
+
+                    <!-- Post Details Area -->
+                    <div class="single-post-details-area">
+                        <div class="post-thumbnail mb-30 ">
+                            <img src="/uploads/img_titles/{{post.image}}" alt="" class="img-fluid"
+                                style="height: auto;width: 730px;object-fit: fill;">
+                        </div>
+                        <div class="post-content">
+                            <p class="post-date">{{timeago post.created_at}}</p>
+                            <h4 class="post-title">{{post.title}}</h4>
+                            <p>{{post.content}}</p>
+                        </div>
+                    </div>
+
+                    <!-- Related Post Area -->
+
+
+                    <!-- Comment Area Start -->
+                    <div class="comment_area clearfix">
+                        <h4 class="headline">{{soLuong.SoLuong}} Bình Luận</h4>
+
+                        <ol>
+                            {{#each comments}}
+                            <li class="single_comment_area">
+                                <div class="comment-wrapper d-flex">
+                                    <div class="comment-content">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <span class="comment-date">{{timeago this.created}}</span>
+                                                <h5>Tài Khoản:  {{this.username}}</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>{{this.comment}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+
+                    <!-- Leave A Comment -->
+                    <div class="leave-comment-area clearfix">
+                        <div class="comment-form">
+                            <h4 class="headline">Để Lại Bình Luận</h4>
+
+                            <!-- Comment Form -->
+                            <form onsubmit="return doComment(this);" method="post" action="/user/comment/{{post.id}}">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" id="post_id" value="{{post.id}}">
+                                        </div>
+                                    </div>
+                                    {{#if user}}
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" id="user_id" value="{{user.id}}">
+                                        </div>
+                                    </div>
+                                    {{/if}}
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="message" id="message" cols="30"
+                                                rows="10" placeholder="Comment"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn foode-btn">Đăng</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Blog Sidebar Area -->
+            <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                <div class="post-sidebar-area">
+
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mt-0">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Danh Mục</h6>
+                        </div>
+                        <ol class="foode-catagories">
+                            {{#each lcAllCateWithDetail}}
+                            <li><a href="/cate/{{this.slug}}"><span><i class="fa fa-stop" aria-hidden="true"></i>{{this.cate_name}}</span>
+                                    {{#if SoLuong}}
+                                    <span>({{this.SoLuong}})</span></a></li>
+                            {{else}}
+                            <span>(0)</span></a></li>
+                            {{/if}}
+                            {{/each}}
+                        </ol>
+                    </div>
+
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Latest Posts</h6>
+                        </div>
+
+                        {{#each lcpostTang}}
+                        <!-- Single Latest Posts -->
+                        <div class="single-latest-post d-flex">
+                            <div class="post-thumb">
+                                <a href="/post/{{this.slug}}"><img src="/uploads/img_titles/{{this.image}}" alt=""></a>
+                            </div>
+                            <div class="post-content">
+                                <a href="/post/{{this.slug}}" class="post-title">
+                                    <h6>{{this.name_post}}</h6>
+                                </a>
+                                <a href="/post/{{this.slug}}"
+                                    class="post-author"><span></span>{{timeago this.created_at}}</a>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
