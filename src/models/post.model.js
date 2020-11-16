@@ -32,4 +32,12 @@ module.exports = {
     postTang: function(){
         return db.load('SELECT * FROM `posts` ORDER BY created_at DESC LIMIT 5');
     }
+    ,
+    pageByCat: function(catId,limit,offset){
+        return db.load(`SELECT * FROM ${TBL_POST} WHERE cate_id = ${catId} limit ${limit} offset ${offset}`);
+    },
+    countByCat: async function(catId){
+        const rows = await db.load(`SELECT  COUNT(*) AS total FROM ${TBL_POST} WHERE cate_id = ${catId}`);
+        return rows[0].total;
+    },
 }

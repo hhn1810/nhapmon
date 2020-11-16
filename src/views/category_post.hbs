@@ -59,8 +59,9 @@
 
                 <!-- Pager -->
                 <ol class="foode-pager mt-50">
-                    <li><a href="#"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Newer</a></li>
-                    <li><a href="#">Older <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>
+                    <li {{#unless can_go_prev}}style="pointer-events: none;"{{/unless}}><a href="?page={{prev_value}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a></li>
+                    <li {{#unless can_go_next}}style="pointer-events: none;"{{/unless}}><a href="?page={{next_value}}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>
+                    
                 </ol>
             </div>
 
