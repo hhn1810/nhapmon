@@ -36,8 +36,15 @@ module.exports = {
     pageByCat: function(catId,limit,offset){
         return db.load(`SELECT * FROM ${TBL_POST} WHERE cate_id = ${catId} limit ${limit} offset ${offset}`);
     },
+    page: function(limit,offset){
+        return db.load(`SELECT * FROM ${TBL_POST} limit ${limit} offset ${offset}`);
+    },
     countByCat: async function(catId){
         const rows = await db.load(`SELECT  COUNT(*) AS total FROM ${TBL_POST} WHERE cate_id = ${catId}`);
+        return rows[0].total;
+    },
+    count: async function(){
+        const rows = await db.load(`SELECT  COUNT(*) AS total FROM ${TBL_POST}`);
         return rows[0].total;
     },
 }

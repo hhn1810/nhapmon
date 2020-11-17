@@ -5,10 +5,25 @@ const commentModel = require('../../models/comment.model');
 class SiteControllers {
     // [GET] 
     async index(req, res) {
+        const page = + req.query.page || 1;
+        if (page<0) page=1;
+        const limit = 5;
+        const offset = (page - 1 ) * limit;
+        const list = await postModel.all();
+        const post = await postModel.page(limit,offset);
+        const total = await postModel.count();
+        const nPages = Math.ceil(total/limit);
         const postTang = await pool.query('SELECT * FROM `posts` ORDER BY created_at ASC LIMIT 5');
-        const post = await pool.query('SELECT * FROM posts ');
-        res.render('home',{post,postTang,user: req.user,success: req.flash('success')},);
-        console.log(req.user);
+        res.render('home',{
+            list,
+            post,
+            postTang,
+            user: req.user,
+            prev_value: page - 1,
+            next_value: page + 1,
+            can_go_prev: page > 1,
+            can_go_next: page < nPages,
+            success: req.flash('success')},);
     }
     // [GET] /about
     about(req, res) {
@@ -35,14 +50,6 @@ class SiteControllers {
         const post = await postModel.pageByCat(cate[0].id,limit,offset);
         const total = await postModel.countByCat(cate[0].id);
         const nPages = Math.ceil(total/limit);
-        const page_items = [];
-        for (let i = 1; i <= nPages; i++) {
-            const item = {
-                value: i
-            };
-            page_items.push(item);
-        }
-        console.log(page,nPages)
         res.render('category_post',{
             cate: cate[0],
             post,
