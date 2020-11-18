@@ -47,7 +47,7 @@
                                 Thống Kê
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="/admin/thongke/baiviet">Bài Viết</a>
+                                <a class="dropdown-item" href="/admin/thongkebaiviet">Bài Viết</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                             </div>
                         </div>
@@ -118,11 +118,11 @@
                                     <td>{{this.username}}</td>
                                     <td>{{this.email}}</td>
                                     <td>{{this.role}}</td>
-                                    <td>{{timeago this.created_at}}</td>
+                                    <td>{{ this.created_at}}</td>
                                     {{#if (isNull this.updated_at)}}
                                     <td>Chưa Cập Nhật</td>
                                     {{else}}
-                                    <td>{{timeago this.updated_at}}</td>
+                                    <td>{{ this.updated_at}}</td>
                                     {{/if}}
                                     <td>
                                         <a href="/admin/user/delete/{{this.id}}" class="mx-4 btn btn-primary"><i

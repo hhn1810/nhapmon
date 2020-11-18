@@ -5,7 +5,9 @@ const userModel = require('../../models/user.model');
 const postModel = require('../../models/post.model');
 const commentModel = require('../../models/comment.model');
 const fs = require("fs");
-var fastcsv = require("fast-csv");
+const excel = require('exceljs');
+const helpers = require('../../lib/helpers');
+
 Handlebars.registerHelper('isNull',function(updated_at){
     if (updated_at === null)
         return true;
@@ -21,6 +23,18 @@ class AdminControllers {
     // Hiển thị tất cả Category GET
     async cate(req, res){
         const category = await categoryModel.all();
+        category.forEach(element => {
+            const day = element.created_at;
+            element.created_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+        });
+        category.forEach(element => {
+            if(element.updated_at === null){
+                element.updated_at = 'Chưa Cập Nhật';
+            }else{
+                const day = element.updated_at;
+                element.updated_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+            }
+        });
         res.render('category/index',{layout : false,category,success: req.flash('success')});
     };
 
@@ -32,7 +46,7 @@ class AdminControllers {
     // Xử lý thêm Category POST
     async addCate(req, res) {
         const cate_name = req.body.category;
-        const slug = req.body.category.toLowerCase();
+        const slug = helpers.changeToSlug(cate_name);
         const cate = await categoryModel.allWhere('cate_name',cate_name);
         if(cate[0]=== undefined){
             const newCategory ={
@@ -62,7 +76,7 @@ class AdminControllers {
         const { id } = req.params;
         const cate_name = req.body.category;
         console.log(cate_name);
-        const slug = req.body.category.toLowerCase();
+        const slug = helpers.changeToSlug(cate_name);
         const cate = await categoryModel.allWhere('cate_name',cate_name);
         if(cate[0]=== undefined){
             const newCategory ={
@@ -114,6 +128,18 @@ class AdminControllers {
     // BÊN USER 
     async user(req, res){
         const users = await userModel.allWhere('role','Author');
+        users.forEach(element => {
+            const day = element.created_at;
+            element.created_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+        });
+        users.forEach(element => {
+            if(element.updated_at === null){
+                element.updated_at = 'Chưa Cập Nhật';
+            }else{
+                const day = element.updated_at;
+                element.updated_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+            }
+        });
         res.render('admin/index',{layout : false, users,success: req.flash('successAdmin'),message: req.flash('success')});
     };
     async delUser(req, res) {
@@ -126,6 +152,18 @@ class AdminControllers {
 
     async post(req, res){
         const post = await postModel.findCatName(); 
+        post.forEach(element => {
+            const day = element.created_at;
+            element.created_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+        });
+        post.forEach(element => {
+            if(element.updated_at === null){
+                element.updated_at = 'Chưa Cập Nhật';
+            }else{
+                const day = element.updated_at;
+                element.updated_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+            }
+        });
         res.render('post/index',{layout : false, post,success: req.flash('success')});
     }
     getaddPost(req, res){
@@ -140,22 +178,7 @@ class AdminControllers {
         const cate_id = req.body.cate;
         const name_post = req.body.name_post;
         const title = req.body.title;
-        console.log(req.body);
         const image = req.file.filename;
-        var chuoi = removeAccents(name_post);
-        chuoi = chuoi.toLowerCase().split(' ');
-        var length = chuoi.length;
-        var slug ='';
-        for(var i=0; i<length;i++)
-        {
-            if(i===length-1)
-            {
-                slug+=chuoi[i];
-            }
-            else{
-                slug += chuoi[i] + '-';
-            }
-        }
         let check = await postModel.allWhere('name_post',name_post);
         if(check < 1){
             const newPost = {
@@ -178,20 +201,7 @@ class AdminControllers {
     async updatePost(req, res){
         const id = req.params.id;
         const {name_post,cate_id,title,content} = req.body;
-        var chuoi = removeAccents(name_post);
-        chuoi = chuoi.toLowerCase().split(' ');
-        var length = chuoi.length;
-        var slug ='';
-        for(var i=0; i<length;i++)
-        {
-            if(i===length-1)
-            {
-                slug+=chuoi[i];
-            }
-            else{
-                slug += chuoi[i] + '-';
-            }
-        }
+        const slug = helpers.changeToSlug(name_post);
         if(req.file !== undefined){
             const image = req.file.filename;
             const newPost = {
@@ -233,6 +243,18 @@ class AdminControllers {
     // Comment 
     async comment (req, res){
         const comment = await commentModel.all();
+        comment.forEach(element => {
+            const day = element.created_at;
+            element.created_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+        });
+        comment.forEach(element => {
+            if(element.updated_at === null){
+                element.updated_at = 'Chưa Cập Nhật';
+            }else{
+                const day = element.updated_at;
+                element.updated_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+            }
+        });
         res.render('admin/comment',{layout : false,comment});
     }
     async delComment (req, res){
@@ -242,24 +264,43 @@ class AdminControllers {
         res.redirect('back');
     }
     async thongkebaiviet(req, res){
-        const post = await postModel.findCatName();
+        const post = await postModel.findCatNameAs();
         post.forEach(element => {
-            let date = element.created_at.getDate();
-            let month = element.created_at.getMonth() + 1;
-            let year = element.created_at.getFullYear();
-            element.created_at = date + "-" + month + "-" +year;
-            console.log(element.created_at);
+            const day = element.NgayTao;
+            element.NgayTao= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+        });
+        post.forEach(element => {
+            if(element.NgayCapNhat === null){
+                element.NgayCapNhat = 'Chưa Cập Nhật';
+            }else{
+                let NgayCapNhatdate = element.NgayCapNhat.getDate();
+                let NgayCapNhatmonth = element.NgayCapNhat.getMonth() + 1;
+                let NgayCapNhatyear = element.NgayCapNhat.getFullYear();
+                element.NgayCapNhat = NgayCapNhatdate + "/" + NgayCapNhatmonth + "/" +NgayCapNhatyear;
+            }
         });
         const jsonData = JSON.parse(JSON.stringify(post));
-        var ws = fs.createWriteStream("D:\\Blog-Nodejs-Express-Mysql\\src\\public\\data.csv");
-        fastcsv
-            .write(jsonData, { headers: true })
-            .on("finish", function() {
- 
-                res.send("<a href='/data.csv' download='data.csv' id='download-link'></a><script>document.getElementById('download-link').click();</script>");
-            })
-            .pipe(ws);
+        let workbook = new excel.Workbook();
+        let worksheet = workbook.addWorksheet('Thống Kê Bài Viết',{properties:{tabColor:{argb:'FF00FF00'}},pageSetup:{paperSize: 9, orientation:'landscape'}});
+        worksheet.headerFooter.firstHeader = "THỐNG KÊ BÀI VIẾT";
+        worksheet.columns = [
+            { header: 'Id', key: 'id', width: 10 },
+            { header: 'Tên Bài Viết', key: 'TenBaiViet', width: 30 },
+            { header: 'Loại Danh Mục', key: 'LoaiDanhMuc', width: 30},
+            { header: 'Mô Tả Ngắn', key: 'MoTaNgan', width: 30},
+            { header: 'Nội Dung', key: 'NoiDung', width: 100},
+            { header: 'Ngày Tạo', key: 'NgayTao', width: 30} ,
+            { header: 'Ngày Cập Nhật', key: 'NgayCapNhat', width: 30}
+          ];
+        worksheet.addRows(jsonData);
+        let day = new Date(Date.now());
+        const fileName = "TKBaiViet" + "_" + day.getDate() + "-" + day.getMonth() + "-" + day.getFullYear() + "_" + day.getMilliseconds() ;
+        // Write to File
+        workbook.xlsx.writeFile(`D:\\Blog-Nodejs-Express-Mysql\\src\\public\\${fileName}.xlsx`)
+        .then(function() {
+            res.download(`/Blog-Nodejs-Express-Mysql/src/public/${fileName}.xlsx`);
+        });
+        }
     }
-}
 
 module.exports = new AdminControllers();

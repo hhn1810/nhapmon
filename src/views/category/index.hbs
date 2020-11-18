@@ -50,7 +50,7 @@
                                 Thống Kê
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="/admin/thongke/baiviet">Bài Viết</a>
+                                <a class="dropdown-item" href="/admin/thongkebaiviet">Bài Viết</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                             </div>
                         </div>
@@ -90,6 +90,7 @@
                         <thead class="table-info">
                             <tr>
                                 <th scope="col">Tên Category</th>
+                                <th scope="col">Slug</th>
                                 <th scope="col">Ngày Tạo</th>
                                 <th scope="col">Ngày Cập Nhật</th>
                                 <th scope="col">Thao tác</th>
@@ -99,11 +100,12 @@
                             {{#each category}}
                             <tr>
                                 <td>{{this.cate_name}}</td>
-                                <td>{{timeago this.created_at}}</td>
+                                <td>{{this.slug}}</td>
+                                <td>{{ this.created_at}}</td>
                                 {{#if (isNull this.updated_at)}}
                                 <td>Chưa Cập Nhật</td>
                                 {{else}}
-                                <td>{{timeago this.updated_at}}</td>
+                                <td>{{ this.updated_at}}</td>
                                 {{/if}}
                                 <td>
                                     <a href="/admin/category/delete/{{this.id}}" class="mx-4 btn btn-primary "><i
