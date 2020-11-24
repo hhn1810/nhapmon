@@ -2,6 +2,7 @@ const { emailValidation } = require('../../lib/validator');
 const Handlebars = require("handlebars"); 
 const userModel = require('../../models/user.model');
 const commentModel = require('../../models/comment.model');
+const helpers = require('../../lib/helpers');
 Handlebars.registerHelper('isdefined', function (value) {
     if (typeof value !== undefined)
         return false;
@@ -28,10 +29,19 @@ class UserControllers {
         const { id } = req.params;
         const email = req.body.email;
         const {error} = emailValidation({email});
+        const emailExist = await userModel.allWhere('email',email);
+        const users = await userModel.single(req.params.id);
         if(error){
-            const err = error.details[0].message;
-            const users = await userModel.single(res.params.id);
+            const err = error.details[0].message;          
             res.render('users/update-email',{layout: false,users: users[0],err: err });
+        }
+        else if(emailExist.length >=1)
+        {
+            if(users[0].email != email){
+                res.render('users/update-email',{layout: false,users: users[0],err: "Email đã tồn tại"});
+            }else{
+                res.redirect('/user/profile');
+            }
         }
         else{
             const newEmailUser = {
@@ -39,6 +49,7 @@ class UserControllers {
                 email
             }
             await userModel.update(newEmailUser);
+            req.flash('success','Cập nhật email thành công')
             res.redirect('/user/profile');
         }
     }
@@ -59,6 +70,29 @@ class UserControllers {
         req.flash('comment','Bình Luận Thành Công');
         res.redirect('back');
     };
+    async updatePassword(req, res){
+        const id = req.params.id;
+        const { username , email  , newpassord} = req.body;
+        let password = req.body.password;
+        const user= await  userModel.allWhere('username',username);
+        const match =  await helpers.matchPassword(password,user[0].password);
+        if(match){
+            password = await helpers.encryptPassword(newpassord);
+            const newPassword ={
+                id,
+                password
+            }
+            await userModel.update(newPassword);
+            req.flash('success','Cập nhật mật khẩu thành công');
+            res.redirect('/user/profile');
+        }
+        else{
+            const users = await userModel.single(id);
+            req.flash('error','Cập nhật mật khẩu thành công');
+            res.render('users/update-password',{layout: false,err: "Mật khẩu không đúng",users: users[0],user: req.user});
+        }
+
+    }
 
 }
 

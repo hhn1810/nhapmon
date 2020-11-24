@@ -71,7 +71,7 @@ router.post('/login',async (req, res, next) => {
   });
 
 router.get('/profile',isLoggedIn, (req, res) => {
-    res.render('users/profile',{layout: false,user: req.user});
+    res.render('users/profile',{layout: false,user: req.user,err : req.flash('error'),success: req.flash('success')});
   });
 router.get('/logout', (req, res) => {
     req.logOut();
@@ -81,5 +81,6 @@ router.get('/logout', (req, res) => {
 router.get('/changePassword/:id',isLoggedIn,userController.showupdatePassword);
 router.get('/changeEmail/:id',isLoggedIn,userController.showupdateEmail);
 router.post('/changeEmail/:id',isLoggedIn,userController.updateEmail);
+router.post('/changePassword/:id',isLoggedIn,userController.updatePassword);
 router.post('/comment/:id',isLoggedIn,userController.comment);
 module.exports = router;

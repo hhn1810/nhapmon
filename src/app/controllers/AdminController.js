@@ -1,4 +1,3 @@
-const pool = require('../../database');
 const Handlebars = require("handlebars"); 
 const categoryModel = require('../../models/category.model');
 const userModel = require('../../models/user.model');
@@ -13,11 +12,6 @@ Handlebars.registerHelper('isNull',function(updated_at){
         return true;
     return false;
 })
-function removeAccents(str) {
-    return str.normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .replace(/đ/g, 'd').replace(/Đ/g, 'D');
-  }
 class AdminControllers {
 
     // Hiển thị tất cả Category GET
@@ -179,6 +173,7 @@ class AdminControllers {
         const name_post = req.body.name_post;
         const title = req.body.title;
         const image = req.file.filename;
+        let slug = helpers.changeToSlug(name_post);
         let check = await postModel.allWhere('name_post',name_post);
         if(check < 1){
             const newPost = {
@@ -201,7 +196,7 @@ class AdminControllers {
     async updatePost(req, res){
         const id = req.params.id;
         const {name_post,cate_id,title,content} = req.body;
-        const slug = helpers.changeToSlug(name_post);
+        let slug = helpers.changeToSlug(name_post);
         if(req.file !== undefined){
             const image = req.file.filename;
             const newPost = {
@@ -266,17 +261,17 @@ class AdminControllers {
     async thongkebaiviet(req, res){
         const post = await postModel.findCatNameAs();
         post.forEach(element => {
-            const day = element.NgayTao;
-            element.NgayTao= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
+            const day = element.created_at;
+            element.created_at= day.getDate() + "/" + (day.getMonth() + 1) + "/" +day.getFullYear() + " " + day.getHours() + ":" + day.getMinutes();
         });
         post.forEach(element => {
-            if(element.NgayCapNhat === null){
-                element.NgayCapNhat = 'Chưa Cập Nhật';
+            if(element.updated_at === null){
+                element.updated_at = 'Chưa Cập Nhật';
             }else{
-                let NgayCapNhatdate = element.NgayCapNhat.getDate();
-                let NgayCapNhatmonth = element.NgayCapNhat.getMonth() + 1;
-                let NgayCapNhatyear = element.NgayCapNhat.getFullYear();
-                element.NgayCapNhat = NgayCapNhatdate + "/" + NgayCapNhatmonth + "/" +NgayCapNhatyear;
+                let updated_atdate = element.updated_at.getDate();
+                let updated_atmonth = element.updated_at.getMonth() + 1;
+                let updated_atyear = element.updated_at.getFullYear();
+                element.updated_at = updated_atdate + "/" + updated_atmonth + "/" +updated_atyear;
             }
         });
         const jsonData = JSON.parse(JSON.stringify(post));
@@ -285,12 +280,13 @@ class AdminControllers {
         worksheet.headerFooter.firstHeader = "THỐNG KÊ BÀI VIẾT";
         worksheet.columns = [
             { header: 'Id', key: 'id', width: 10 },
-            { header: 'Tên Bài Viết', key: 'TenBaiViet', width: 30 },
-            { header: 'Loại Danh Mục', key: 'LoaiDanhMuc', width: 30},
-            { header: 'Mô Tả Ngắn', key: 'MoTaNgan', width: 30},
-            { header: 'Nội Dung', key: 'NoiDung', width: 100},
-            { header: 'Ngày Tạo', key: 'NgayTao', width: 30} ,
-            { header: 'Ngày Cập Nhật', key: 'NgayCapNhat', width: 30}
+            { header: 'Tên Bài Viết', key: 'name_post', width: 30 },
+            { header: 'Loại Danh Mục', key: 'cate_name', width: 30},
+            { header: 'Mô Tả Ngắn', key: 'title', width: 30},
+            { header: 'Nội Dung', key: 'content', width: 100},
+            { header: 'Ngày Tạo', key: 'created_at', width: 30} ,
+            { header: 'Ngày Cập Nhật', key: 'updated_at', width: 30},
+            { header: 'Số Bình Luận', key: 'SoLuongCmt', width: 30}
           ];
         worksheet.addRows(jsonData);
         let day = new Date(Date.now());

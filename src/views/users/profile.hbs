@@ -24,6 +24,12 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Thông Tin Tài Khoản</h2>
+                        {{#if err}}
+                        <p style="padding: 8px; margin 8px;color:red;" class="warning">{{err}}</p>
+                        {{/if}}
+                        {{#if success}}
+                        <p style="padding: 8px; margin 8px;color:lightgreen;" class="warning">{{success}}</p>
+                        {{/if}}
                             {{#if user}}
                             <form method="GET" class="register-form" id="register-form" action="../../user/changeEmail/{{user.id}}">
                                 <div class="form-group">

@@ -29,6 +29,9 @@ module.exports = {
     findCatName: function(){
         return db.load('SELECT `posts`.`id`,`name_post`,`title`,`posts`.`slug`,`image`,`content`,`posts`.`created_at`,`posts`.`updated_at`,`category`.`cate_name`  FROM `posts`,`category` WHERE `category`.`id`=`posts`.`cate_id`');
     },
+    findCatNameAs: function(){
+        return db.load('SELECT `posts`.*,`category`.`cate_name`,COUNT(`comment_post`.id) as SoLuongCmt FROM `posts`,`comment_post`,`category` WHERE `posts`.`id`=`comment_post`.`post_id` AND `posts`.`cate_id`=`category`.`id` GROUP BY `posts`.`id`');
+    },
     postTang: function(){
         return db.load('SELECT * FROM `posts` ORDER BY created_at DESC LIMIT 5');
     }

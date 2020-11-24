@@ -13,7 +13,7 @@ module.exports = {
     allWhere: function(col,role){
         return db.loadWhere(TBL_CATEGORY,role,col);
     },
-    allWithDetail: function(){
+        allWithDetail: function(){
         return db.load('SELECT `category`.*,COUNT(`posts`.`cate_id`) as SoLuong FROM `category` left join `posts` on `category`.`id`= `posts`.`cate_id` GROUP BY `category`.`id`,`category`.`cate_name`');
     },  
     update: function(entity){

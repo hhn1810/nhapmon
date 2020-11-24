@@ -5,7 +5,7 @@ module.exports = {
         return db.load(`SELECT comment_post.id, comment_post.comment,posts.name_post,users.username, comment_post.created_at AS created, comment_post.updated_at AS updated, users.username FROM comment_post INNER JOIN users ON comment_post.user_id = users.id INNER JOIN posts ON comment_post.post_id = posts.id WHERE post_id = ${post_id}`);
     },
     all: function(){
-        return db.load('SELECT comment_post.id,comment_post.comment, posts.name_post,users.username FROM comment_post INNER JOIN users ON comment_post.user_id= users.id INNER JOIN posts ON comment_post.post_id = posts.id');
+        return db.load('SELECT comment_post.id,comment_post.comment,comment_post.updated_at, posts.name_post,comment_post.created_at,users.username FROM comment_post INNER JOIN users ON comment_post.user_id= users.id INNER JOIN posts ON comment_post.post_id = posts.id');
     },
     soLuong: function(post_id){
         return db.load(`SELECT COUNT(post_id) as SoLuong FROM comment_post WHERE post_id =${post_id}`);
