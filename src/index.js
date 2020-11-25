@@ -8,7 +8,6 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session");
 const passport = require("passport");
-// var multer  =   require('multer');
 // Khởi tạo express
 const app = express();
 require("./lib/passport");
@@ -53,7 +52,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(express.static(path.join(__dirname, "public")));
 const categoryModel = require("./models/category.model");
 const postModel = require("./models/post.model");
 // Khai báo các biến toàn cục
@@ -74,11 +73,11 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/user", require("./routers/users"));
-// app.use("/post", require("./routers/posts"));
 app.use("/admin", require("./routers/admin"));
 app.use("/", require("./routers/site"));
-// Public
-app.use(express.static(path.join(__dirname, "public")));
+app.use(function (req, res, next) {
+  res.status(404).redirect("/");
+});
 
 // Chạy server
 app.listen(app.get("port"), () => {
