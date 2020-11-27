@@ -29,6 +29,26 @@ class SiteControllers {
     });
   }
   // [GET] /about
+  async search(req, res) {
+    const search = req.query.search;
+    const data = await postModel.search(search);
+    const page = +req.query.page || 1;
+    if (page < 0) page = 1;
+    const limit = 2;
+    const offset = (page - 1) * limit;
+    const post = await postModel.pageBySearch(search, limit, offset);
+    const total = await postModel.countBySearch(search);
+    const nPages = Math.ceil(total / limit);
+    res.render("search", {
+      post: post,
+      query: search,
+      prev_value: page - 1,
+      next_value: page + 1,
+      can_go_prev: page > 1,
+      can_go_next: page < nPages,
+    });
+  }
+
   about(req, res) {
     res.render("about");
   }

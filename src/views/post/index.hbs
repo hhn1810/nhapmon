@@ -44,18 +44,6 @@
                     <li class="nav-item ">
                         <a href="/admin/comment" class="nav-link">Bình Luận</a>
                     </li>
-                    <li class="nav-item ">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Thống Kê
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="/admin/thongkebaiviet">Bài Viết</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item text-light mr-3 nav-link">Xin Chào Admin</li>
@@ -85,7 +73,9 @@
                 <h1 class="text-center my-5">DANH SÁCH CÁC BÀI VIẾT</h1>
                 <div class="text-right mb-1">
                     <button type="button" class="px-4 btn btn-primary " data-toggle="modal" data-target="#addPost"><i
-                            class="fas fa-plus"></i></a>
+                            class="fas fa-plus"></i>
+                    </button>
+                    <a href="/admin/thongkebaiviet" class="btn btn-secondary">Xuất file Excel</a>
                 </div>
                 <div class="table-responsive w-100">
                     <table class="table table-bordered table-hover text-center text-capitalize  ">

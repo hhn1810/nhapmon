@@ -44,6 +44,11 @@ module.exports = {
       `SELECT * FROM ${TBL_POST} WHERE cate_id = ${catId} limit ${limit} offset ${offset}`
     );
   },
+  pageBySearch: function (data, limit, offset) {
+    return db.load(
+      `SELECT * FROM ${TBL_POST} WHERE LOWER(name_post) like LOWER('%${data}%') limit ${limit} offset ${offset}`
+    );
+  },
   page: function (limit, offset) {
     return db.load(`SELECT * FROM ${TBL_POST} limit ${limit} offset ${offset}`);
   },
@@ -53,8 +58,20 @@ module.exports = {
     );
     return rows[0].total;
   },
+  countBySearch: async function (data) {
+    const rows = await db.load(
+      `SELECT  COUNT(*) AS total FROM ${TBL_POST} WHERE LOWER(name_post) like LOWER('%${data}%') `
+    );
+    return rows[0].total;
+  },
   count: async function () {
     const rows = await db.load(`SELECT  COUNT(*) AS total FROM ${TBL_POST}`);
     return rows[0].total;
+  },
+  search: async function (data) {
+    const rows = await db.load(
+      `SELECT * FROM ${TBL_POST} WHERE LOWER(name_post) like LOWER('%${data}%') `
+    );
+    return rows;
   },
 };

@@ -8,7 +8,7 @@
                     <div class="top-header-content d-flex align-items-center justify-content-between">
                         <!-- Search Form -->
                         <div class="search-form">
-                            <form action="#" method="get">
+                            <form action="/timkiem" method="get" autocomplete="off">
                                 <input type="search" name="search" class="form-control"
                                     placeholder="Search and hit enter...">
                                 <button type="submit"><i class="fa fa-search"></i></button>
@@ -99,13 +99,13 @@
                             <ul>
                                 <li><a href="/">Trang Chủ</a></li>
                                 <li><a href="#">Danh Mục</a>
-                                   
+
                                     <ul class="dropdown">
-                                         {{#each lcCategory}}
+                                        {{#each lcCategory}}
                                         <li><a href="/cate/{{this.slug}}">{{cate_name}}</a></li>
                                         {{/each}}
                                     </ul>
-                                    
+
                                 </li>
                                 <li><a href="/about">Thông Tin</a></li>
                                 <li><a href="/contact">Liên Lạc</a></li>

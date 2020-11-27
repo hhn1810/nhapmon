@@ -1,0 +1,193 @@
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <img src="img/core-img/breadcrumb-line.png" alt="">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Kết quả tìm kiếm của <b>{{query}}</b> </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ##### Blog Content Area Start ##### -->
+<section class="blog-content-area section-padding-0-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <!-- Blog Posts Area -->
+      <div class="col-12 col-lg-8">
+        <div class="blog-posts-area">
+          <!-- Single Blog Post -->
+          {{#each post}}
+          <div class="single-blog-post d-flex flex-wrap mt-50">
+            <!-- Thumbnail -->
+            <div class="post-thumbnail mb-50">
+              <a href="/post/{{this.slug}}"><img src="/uploads/img_titles/{{this.image}}" alt=""></a>
+            </div>
+            <!-- Content -->
+            <div class="post-content mb-50">
+              <p class="post-date">{{timeago this.created_at}}</p>
+              <a href="/post/{{this.slug}}" class="post-title">
+                <h4>{{this.name_post}}</h4>
+              </a>
+              <p class="post-excerpt text-truncate" style="max-width: 100%;">{{this.content}}</p>
+              <a href="/post/{{this.slug}}" class="read-more-btn">Đọc Tiếp Bài Viết<i class="fa fa-long-arrow-right"
+                  aria-hidden="true"></i></a>
+            </div>
+            <!-- Post Curve Line -->
+            <img class="post-curve-line" src="/img/core-img/post-curve-line.png" alt="">
+          </div>
+          {{/each}}
+
+        </div>
+
+        <!-- Pager -->
+        <ol class="foode-pager mt-50">
+          <li {{#unless can_go_prev}}style="pointer-events: none;" {{/unless}}><a
+              href="?search={{query}}&page={{prev_value}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+          </li>
+          <li {{#unless can_go_next}}style="pointer-events: none;" {{/unless}}><a
+              href="?search={{query}}&page={{next_value}}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+          </li>
+
+        </ol>
+      </div>
+
+      <!-- Blog Sidebar Area -->
+      <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+        <div class="post-sidebar-area">
+
+          <!-- ##### Single Widget Area ##### -->
+          <div class="single-widget-area mt-0">
+            <form class="search-form" action="#" method="post">
+              <input type="search" name="search" class="form-control" placeholder="Search...">
+              <button><i class="fa fa-send"></i></button>
+            </form>
+          </div>
+
+          <!-- ##### Single Widget Area ##### -->
+          <div class="single-widget-area">
+            <!-- Title -->
+            <div class="widget-title">
+              <h6>Thông Tin</h6>
+            </div>
+            <!-- Thumbnail -->
+            <div class="about-thumbnail">
+              <img src="/img/blog-img/about-me.jpg" alt="">
+            </div>
+            <!-- Content -->
+            <div class="widget-content text-center">
+              <img src="/img/core-img/signature.png" alt="">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt</p>
+            </div>
+          </div>
+
+          <!-- ##### Single Widget Area ##### -->
+          <div class="single-widget-area">
+            <!-- Title -->
+            <div class="widget-title">
+              <h6>Danh Mục</h6>
+            </div>
+            <ol class="foode-catagories">
+              {{#each lcAllCateWithDetail}}
+              <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i>{{this.cate_name}}</span>
+                  {{#if SoLuong}}
+                  <span>({{this.SoLuong}})</span></a></li>
+              {{else}}
+              <span>(0)</span></a></li>
+              {{/if}}
+              {{/each}}
+            </ol>
+          </div>
+
+          <!-- ##### Single Widget Area ##### -->
+          <div class="single-widget-area">
+            <!-- Title -->
+            <div class="widget-title">
+              <h6>Các Bài Viết Mới Nhất</h6>
+            </div>
+
+            {{#each lcpostTang}}
+            <!-- Single Latest Posts -->
+            <div class="single-latest-post d-flex">
+              <div class="post-thumb">
+                <img src="/uploads/img_titles/{{this.image}}" alt="">
+              </div>
+              <div class="post-content">
+                <a href="#" class="post-title">
+                  <h6>{{this.name_post}}</h6>
+                </a>
+                <a href="#" class="post-author"><span></span>{{timeago this.created_at}}</a>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ##### Blog Content Area End ##### -->
+
+<!-- ##### Instagram Area Start ##### -->
+<div class="follow-us-instagram">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="section-heading">
+          <h2>Follow Us On Instagram</h2>
+          <span>@foodeblog</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="instagram-slides owl-carousel">
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta1.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta2.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta3.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta4.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta5.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+
+          <!-- Single Instagram Slide -->
+          <div class="single-instagram-slide">
+            <img src="/img/blog-img/insta6.jpg" alt="">
+            <a href="#"><i class="fa fa-instagram"></i>Follow Me</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ##### Instagram Area End ##### -->
