@@ -21,6 +21,7 @@
       <!-- Blog Posts Area -->
       <div class="col-12 col-lg-8">
         <div class="blog-posts-area">
+          {{#if post}}
           <!-- Single Blog Post -->
           {{#each post}}
           <div class="single-blog-post d-flex flex-wrap mt-50">
@@ -42,8 +43,11 @@
             <img class="post-curve-line" src="/img/core-img/post-curve-line.png" alt="">
           </div>
           {{/each}}
-
+          {{else}}
+          <h1>Không có bài viết nào</h1>
+          {{/if}}
         </div>
+
 
         <!-- Pager -->
         <ol class="foode-pager mt-50">

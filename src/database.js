@@ -1,12 +1,13 @@
 const mysql = require("mysql");
 const { promisify } = require("util");
-
+const database = require("./keys");
+require("dotenv").config();
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: "localhost",
-  user: "root",
+  host: process.env.HOST,
+  user: process.env.USER,
   password: "",
-  database: "blogdb",
+  database: process.env.DATABASE,
 });
 
 pool.getConnection((err, connection) => {

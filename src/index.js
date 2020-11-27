@@ -8,15 +8,17 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session");
 const passport = require("passport");
+require("dotenv").config();
 // Khởi tạo express
 const app = express();
 require("./lib/passport");
 
 const db = {
-  host: "localhost",
-  user: "root",
+  connectionLimit: 10,
+  host: process.env.HOST,
+  user: process.env.USER,
   password: "",
-  database: "blogdb",
+  database: process.env.DATABASE,
 };
 
 // Cấu hình địa chỉ PORT
@@ -34,11 +36,11 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 // Middlewares
-app.use(cookieParser("hoangnguyen"));
+app.use(cookieParser(process.env.SECRET_KEY));
 // config session
 app.use(
   session({
-    secret: "hoangnguyen",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(db),
@@ -80,6 +82,6 @@ app.use(function (req, res, next) {
 });
 
 // Chạy server
-app.listen(app.get("port"), () => {
-  console.log("Server chạy dưới PORT ", app.get("port"));
+app.listen(3000 || process.env.PORT, () => {
+  console.log("Server chạy dưới PORT ", 3000 || process.env.PORT);
 });
