@@ -172,8 +172,7 @@ class AdminControllers {
     res.render("admin/index", {
       layout: false,
       users,
-      success: req.flash("successAdmin"),
-      message: req.flash("success"),
+      success: req.flash("success"),
     });
   }
   async delUser(req, res) {

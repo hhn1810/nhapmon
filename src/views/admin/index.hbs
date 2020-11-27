@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-        *{
+
+        * {
             font-family: 'Poppins', sans-serif;
         }
-        h1{
+
+        h1 {
             font-weight: 700;
         }
     </style>
@@ -21,7 +23,8 @@
 
 <body>
     <div class="container-lg main">
-        <nav class="navbar navbar-expand-md navbar-dark py-5 " style=" background: linear-gradient(to right, #5d4157, #a8caba); " >
+        <nav class="navbar navbar-expand-md navbar-dark py-5 "
+            style=" background: linear-gradient(to right, #5d4157, #a8caba); ">
             <a href="/admin" class="navbar-brand">Trang Quản Trị</a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
@@ -40,24 +43,11 @@
                     <li class="nav-item ">
                         <a href="/admin/comment" class="nav-link">Bình Luận</a>
                     </li>
-                    <li class="nav-item ">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Thống Kê
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="/admin/thongkebaiviet">Bài Viết</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item text-light mr-3 nav-link">Xin Chào Admin</li>
                     <li class="nav-item"><a href="/admin/logout"><i
                                 class="fas fa-sign-out-alt btn btn-secondary nav-link"></i></a></li>
-
                 </ul>
             </div>
         </nav>
@@ -76,27 +66,11 @@
             </div>
         </div>
         {{/if}}
-        {{#if message}}
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-4 mx-auto">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{message}}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span arial-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{/if}}
         <div class="container-fluid">
             <div class="card-mx-auto">
-                
-
                 <div class="card-body">
                     <div class="card-title">
-                    <h1 class="text-center my-5">DANH SÁCH CÁC NGƯỜI DÙNG</h1>
+                        <h1 class="text-center my-5">DANH SÁCH CÁC NGƯỜI DÙNG</h1>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover text-center">
@@ -137,7 +111,6 @@
         </div>
 
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

@@ -45,18 +45,6 @@
                     <li class="nav-item active">
                         <a href="/admin/comment" class="nav-link">Bình Luận</a>
                     </li>
-                    <li class="nav-item ">
-                        <div class="dropdown">
-                            <button class="btn  btn-outline-light text-light dropdown-toggle" type="button" id="dropdownMenu1"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="outline:none!important;color:#FFFFFF80!important">
-                                Thống Kê
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="/admin/thongkebaiviet">Bài Viết</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item text-light mr-3 nav-link">Xin Chào Admin</li>
@@ -103,7 +91,7 @@
                                 <td>{{this.created_at}}</td>
                                 <td>{{this.comment}}</td>
                                 <td>
-                                    <a href="/admin/comment/delete/{{this.id}}" class="mx-4 btn btn-primary"><i
+                                    <a href="/admin/comment/delete/{{this.id}}" class="mx-4 btn btn-primary delete"><i
                                             class="far fa-trash-alt"></i></a>
                                 </td>
                             </tr>
@@ -116,7 +104,13 @@
         </div>
 
     </div>
+    <script>
+        $('a.delete').on('click', function () {
+            if (!confirm("Bạn có thực sự muốn xóa ?"))
+                return false;
+        });
 
+    </script>
     <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
