@@ -339,6 +339,7 @@ class AdminControllers {
   }
   async thongkebaiviet(req, res) {
     const post = await postModel.findCatNameAs();
+    console.log(post);
     post.forEach((element) => {
       const day = element.created_at;
       element.created_at =
