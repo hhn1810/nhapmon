@@ -107,8 +107,9 @@
                                         style="max-width: 150px" ;></td>
                                 <td class="mh-25 text-truncate " style="max-width: 150px;">{{this.content}}</td>
                                 <td>
-                                    <a href="/admin/post/delete/{{this.id}}" class="mx-4 btn btn-primary delete"><i
-                                            class="far fa-trash-alt"></i></a>
+                                    <a href="#" class="mx-4 btn btn-primary delete" id="delete" data-toggle="modal"
+                                        data-target="#deleteModel" data-id="{{this.id}}"><i
+                                            class=" far fa-trash-alt"></i></a>
                                     <a href="/admin/post/update/{{this.id}}" class="mx-4 btn btn-danger"><i
                                             class="far fa-edit"></i></a></td>
                                 </td>
@@ -171,22 +172,50 @@
                 </div>
             </div>
         </div>
-
+        <div class="modal" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xóa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có muốn xóa không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="deleteBtn">Xóa</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <script>
-        $('a.delete').on('click', function () {
-            if (!confirm("Bạn có thực sự muốn xóa ?"))
-                return false;
-        });
-
-    </script>
-    <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+    <form name="form-delete" method="GET"></form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script>
+        var deleteID;
+        var deleteForm = document.forms['form-delete'];
+        $('#deleteModel').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            deleteID = button.data('id');
+        });
+        var btnDelete = $('#deleteBtn');
+
+        btnDelete.on('click', function () {
+            deleteForm.action = '/admin/post/delete/' + deleteID;
+            deleteForm.submit();
+        });
+    </script>
 </body>
 
 </html>
