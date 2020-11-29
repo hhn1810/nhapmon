@@ -44,7 +44,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(db),
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 600000 },
   })
 );
 // Flash

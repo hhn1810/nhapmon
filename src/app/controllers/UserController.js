@@ -89,10 +89,9 @@ class UserControllers {
       res.redirect("/user/profile");
     } else {
       const users = await userModel.single(id);
-      req.flash("error", "Cập nhật mật khẩu thành công");
+      req.flash("error", "Mật khẩu không đúng");
       res.render("users/update-password", {
         layout: false,
-        err: "Mật khẩu không đúng",
         users: users[0],
         user: req.user,
       });
