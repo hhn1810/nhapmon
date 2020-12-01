@@ -88,6 +88,7 @@
                                 <th scope="col">Title</th>
                                 <th scope="col">Hình Ảnh</th>
                                 <th scope="col">Nội Dung</th>
+                                <th scope="col">Lượt xem</th>
                                 <th scope="col">Thao Tác</th>
                             </tr>
                         </thead>
@@ -106,6 +107,7 @@
                                 <td><img src="/uploads/img_titles/{{this.image}}" alt="" class="img-fluid w-75"
                                         style="max-width: 150px" ;></td>
                                 <td class="mh-25 text-truncate " style="max-width: 150px;">{{this.content}}</td>
+                                <td>{{this.view}}</td>
                                 <td>
                                     <a href="#" class="mx-4 btn btn-primary delete" id="delete" data-toggle="modal"
                                         data-target="#deleteModel" data-id="{{this.id}}"><i

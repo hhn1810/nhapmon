@@ -49,7 +49,7 @@
                                         <div class="card mb-3">
                                             <div class="card-header">
                                                 <span class="comment-date">{{timeago this.created}}</span>
-                                                <h5>Tài Khoản:  {{this.username}}</h5>
+                                                <h5>Tài Khoản: {{this.username}}</h5>
                                             </div>
                                             <div class="card-body">
                                                 <p>{{this.comment}}</p>
@@ -111,7 +111,8 @@
                         </div>
                         <ol class="foode-catagories">
                             {{#each lcAllCateWithDetail}}
-                            <li><a href="/cate/{{this.slug}}"><span><i class="fa fa-stop" aria-hidden="true"></i>{{this.cate_name}}</span>
+                            <li><a href="/cate/{{this.slug}}"><span><i class="fa fa-stop"
+                                            aria-hidden="true"></i>{{this.cate_name}}</span>
                                     {{#if SoLuong}}
                                     <span>({{this.SoLuong}})</span></a></li>
                             {{else}}
@@ -137,6 +138,7 @@
                             <div class="post-content">
                                 <a href="/post/{{this.slug}}" class="post-title">
                                     <h6>{{this.name_post}}</h6>
+                                    <a href="#"><i class="fa fa-eye"></i> {{this.view}}</a>
                                 </a>
                                 <a href="/post/{{this.slug}}"
                                     class="post-author"><span></span>{{timeago this.created_at}}</a>

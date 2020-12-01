@@ -50,6 +50,7 @@
                             <p class="post-date">{{timeago this.created_at}} / {{this.cate_name}}</p>
                             <a href="/post/{{this.slug}}" class="post-title">
                                 <h4>{{this.name_post}}</h4>
+                                <a href="#"><i class="fa fa-eye"></i> {{this.view}}</a>
                             </a>
                             <p class="post-excerpt">{{this.title}}</p>
                             <a href="/post/{{this.slug}}" class="read-more-btn">Chi Tiết Bài Viết<i
@@ -125,6 +126,9 @@
                                 <a href="/post/{{this.slug}}" class="post-title">
                                     <h6>{{this.name_post}}</h6>
                                 </a>
+                                <div class="post-meta">
+                                    <a href="#"><i class="fa fa-eye"></i> {{this.view}}</a>
+                                </div>
                                 <a href="/post/{{this.slug}}"
                                     class="post-author"><span></span>{{timeago this.created_at}}</a>
                             </div>

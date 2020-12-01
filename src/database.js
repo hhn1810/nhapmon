@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const { promisify } = require("util");
-const database = require("./keys");
 require("dotenv").config();
 const pool = mysql.createPool({
   connectionLimit: 10,

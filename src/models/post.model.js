@@ -28,7 +28,7 @@ module.exports = {
   },
   findCatName: function () {
     return db.load(
-      "SELECT `posts`.`id`,`name_post`,`title`,`posts`.`slug`,`image`,`content`,`posts`.`created_at`,`posts`.`updated_at`,`category`.`cate_name`  FROM `posts`,`category` WHERE `category`.`id`=`posts`.`cate_id`"
+      "SELECT `posts`.`id`,`posts`.`view`,`name_post`,`title`,`posts`.`slug`,`image`,`content`,`posts`.`created_at`,`posts`.`updated_at`,`category`.`cate_name`  FROM `posts`,`category` WHERE `category`.`id`=`posts`.`cate_id`"
     );
   },
   findCatNameAs: function () {
@@ -50,7 +50,9 @@ module.exports = {
     );
   },
   page: function (limit, offset) {
-    return db.load(`SELECT * FROM ${TBL_POST} limit ${limit} offset ${offset}`);
+    return db.load(
+      `SELECT ${TBL_POST}.*,category.cate_name FROM ${TBL_POST},category where ${TBL_POST}.cate_id = category.id limit ${limit} offset ${offset}`
+    );
   },
   countByCat: async function (catId) {
     const rows = await db.load(

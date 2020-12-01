@@ -14,7 +14,7 @@ class SiteControllers {
     const total = await postModel.count();
     const nPages = Math.ceil(total / limit);
     const postTang = await pool.query(
-      "SELECT * FROM `posts` ORDER BY created_at ASC LIMIT 5"
+      "SELECT `posts`.* , `category`.`cate_name` as tencate FROM `posts`,`category` WHERE `posts`.`cate_id` = `category`.`id` ORDER BY created_at ASC LIMIT 5"
     );
     res.render("home", {
       list,
@@ -58,6 +58,12 @@ class SiteControllers {
   async showPost(req, res) {
     const slug = req.params.slug;
     const post = await pool.query("SELECT * FROM posts WHERE slug = ?", slug);
+    const view = post[0].view + 1;
+    const newPost = {
+      id: post[0].id,
+      view,
+    };
+    await postModel.update(newPost);
     const message = await commentModel.allDK(post[0].id);
     const soLuong = await commentModel.soLuong(post[0].id);
     res.render("single_post", {

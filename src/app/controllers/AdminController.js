@@ -14,6 +14,7 @@ Handlebars.registerHelper("isNull", function (updated_at) {
 class AdminControllers {
   // Hiển thị tất cả Category GET
   async cate(req, res) {
+    console.log(req.user);
     const category = await categoryModel.all();
     category.forEach((element) => {
       const day = element.created_at;
