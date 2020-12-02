@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Đổi Email</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="../fonts/material-icon/css/material-design-iconic-font.min.css">
@@ -23,24 +23,25 @@
             <div class="container">
                 <div class="signup-content">
                     <div class="signup-form">
-                        <h2 class="form-title">Update Email</h2>
+                        <h2 class="form-title" style=" color: #6dabe4;">Đổi Email</h2>
                         <p style="padding: 8px; margin 8px;color:red;" class="warning">{{err}}</p>
                         <form method="POST" class="register-form" id="register-form" action="{{user.id}}">
-                                <div class="form-group">
-                                    <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                    <input type="text" name="username" id="username" placeholder="Your Name" disabled="true"
-                                        value={{#if users}}{{users.username}}{{else}}{{user.username}}{{/if}} />
-                                </div>
-                                <div class="form-group">
-                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                    <input type="email" name="email" id="email" placeholder="Your Email"
-                                        value={{#if users}}{{users.email}}{{else}}{{user.email}}{{/if}} />
-                                </div>
-                                <div class="form-group form-button">
-                                    <input type="submit" name="signup" id="signup" class="form-submit"
-                                        value="Update" />
-                                </div>
-                            </form>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="username" placeholder="Your Name" disabled="true"
+                                    value={{#if users}}{{users.username}}{{else}}{{user.username}}{{/if}} />
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"
+                                    value={{#if users}}{{users.email}}{{else}}{{user.email}}{{/if}} />
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Đổi" />
+                                <a href="javascript:history.back()" class="form-submit"
+                                    style="text-decoration:none;font: 400 13.3333px Roboto;">Trở lại</a>
+                            </div>
+                        </form>
                     </div>
                     <div class="signup-image">
                         <figure><img src="../images/signup-image.jpg" alt="sing up image"></figure>

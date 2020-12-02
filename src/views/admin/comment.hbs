@@ -7,10 +7,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
         * {
             font-family: 'Poppins', sans-serif;
             color: #000000;
@@ -47,10 +47,11 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item text-light mr-3 nav-link">Xin Chào Admin</li>
-                    <li class="nav-item"><a href="/admin/logout"><i
-                                class="fas fa-sign-out-alt btn btn-secondary nav-link"></i></a></li>
-
+                    <li class="nav-item text-light  nav-link">Xin Chào,{{user.username}}</li>
+                    <li class="nav-item mx-2"><a href="/admin/logout"><i
+                                class="fas fa-sign-out-alt btn btn-primary nav-link px-4"></i></a></li>
+                    <li class="nav-item"><a href="/user/profile"><i
+                                class="far fa-id-badge btn btn-secondary nav-link px-4"></i></a></li>
                 </ul>
             </div>
         </nav>
@@ -72,6 +73,9 @@
             {{/if}}
             <div class="card-mx-auto danhsach">
                 <h1 class="text-center my-5">DANH SÁCH CÁC BÌNH LUẬN</h1>
+                <div class="text-right mb-1">
+                    <a href="/admin/thongke/binhluan" class="btn btn-success">Xuất file Excel</a>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover text-center">
                         <thead class="table-info">

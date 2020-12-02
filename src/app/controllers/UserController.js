@@ -7,6 +7,9 @@ Handlebars.registerHelper("isdefined", function (value) {
   if (typeof value !== undefined) return false;
   return true;
 });
+Handlebars.registerHelper("compare", function (v1, v2) {
+  return v1 === v2;
+});
 class UserControllers {
   // Tạo trang đăng ký => GET
   getRegisterPage(req, res) {

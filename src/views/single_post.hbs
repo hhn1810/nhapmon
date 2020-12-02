@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <img src="img/core-img/breadcrumb-line.png" alt="">
+                <img src="/img/core-img/breadcrumb-line.png" alt="">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i>Trang Chủ</a></li>
@@ -47,11 +47,20 @@
                                 <div class="comment-wrapper d-flex">
                                     <div class="comment-content">
                                         <div class="card mb-3">
-                                            <div class="card-header">
-                                                <span class="comment-date">{{timeago this.created}}</span>
-                                                <h5>Tài Khoản: {{this.username}}</h5>
+                                            <div class="card-header d-flex justify-content-between">
+                                                <div>
+                                                    <span class="comment-date">{{timeago this.created}}</span>
+                                                    <h5>Tài Khoản: {{this.username}}
+                                                    </h5>
+                                                </div>
+                                                {{#if (compare ../lcuser.id this.user_id)}}
+                                                <a href="#" class="btn btn-light comment-date"
+                                                    style="color: #e59f80; line-height: 1.5" id="delete"
+                                                    data-toggle="modal" data-target="#deleteModel"
+                                                    data-id="{{../lcuser.id}}" data-comment="{{this.id}}"> Xóa</a>
+                                                {{/if}}
                                             </div>
-                                            <div class="card-body">
+                                            <div class=" card-body">
                                                 <p>{{this.comment}}</p>
                                             </div>
                                         </div>
@@ -85,7 +94,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <textarea class="form-control" name="message" id="message" cols="30"
-                                                rows="10" placeholder="Comment"></textarea>
+                                                rows="10" placeholder="Bình luận" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -150,5 +159,42 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xóa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có muốn xóa không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="deleteBtn">Xóa</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form-delete" method="GET"></form>
     </div>
+    <script>
+        var deleteID;
+        var commentID;
+        var deleteForm = document.forms['form-delete'];
+        $('#deleteModel').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            deleteID = button.data('id');
+            commentID = button.data('comment');
+        });
+        var btnDelete = $('#deleteBtn');
+
+        btnDelete.on('click', function () {
+            deleteForm.action = '/deleteComment/' + commentID;
+            deleteForm.submit();
+        });
+    </script>
 </section>

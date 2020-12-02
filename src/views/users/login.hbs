@@ -26,22 +26,24 @@
                         <a href="signup" class="signup-image-link">Tạo Tài Khoản</a>
                     </div>
                     <div class="signin-form">
-                        <h2 class="form-title">Đăng nhập</h2>
+                        <h2 class="form-title" style=" color: #6dabe4;">ĐĂNG NHẬP</h2>
                         {{#if error}}
-                        <p style="padding: 8px; margin 8px ;color: red ;" class="warning" >{{error}}</p>
+                        <p style="padding: 8px; margin 8px ;color: red ;" class="warning">{{error}}</p>
                         {{/if}}
 
                         <form method="POST" class="register-form" id="login-form">
                             <div class="form-group">
                                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="username" placeholder="Nhập tài khoản" required/>
+                                <input type="text" name="username" id="username" placeholder="Nhập tài khoản"
+                                    required />
                             </div>
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="password" placeholder="Nhập mật khẩu"  required/>
+                                <input type="password" name="password" id="password" placeholder="Nhập mật khẩu"
+                                    required />
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Đăng nhập" />
                             </div>
                         </form>
                     </div>
