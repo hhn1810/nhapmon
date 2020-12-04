@@ -60,7 +60,7 @@ const postModel = require("./models/post.model");
 // Khai báo các biến toàn cục
 app.use(async (req, res, next) => {
   const lcCategory = await categoryModel.all();
-  const lcCatName = await postModel.findCatName();
+  const lcCatName = await postModel.findCatName1();
   const lcpostTang = await postModel.postTang();
   const lcAllCateWithDetail = await categoryModel.allWithDetail();
   res.locals.lcCategory = lcCategory;

@@ -10,6 +10,7 @@ const userModel = require("../models/user.model");
 router.get("/signup", userController.getRegisterPage);
 router.post("/signup", async (req, res, next) => {
   const { username, email, password, repassword } = req.body;
+  var format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
   const { error } = registerValidation({
     username,
     email,
@@ -18,7 +19,13 @@ router.post("/signup", async (req, res, next) => {
   });
   const usernameExist = await userModel.allWhere("username", username);
   const emailExist = await userModel.allWhere("email", email);
-  if (error) {
+  if (format.test(username)) {
+    req.flash("error", "Tên đăng nhập không được có kí tự đặc biệt");
+    res.redirect("/user/signup");
+  } else if (format.test(password)) {
+    req.flash("error", "Mật khẩu không được có kí tự đặc biệt");
+    res.redirect("/user/signup");
+  } else if (error) {
     const err = error.details[0].message;
     req.flash("error", err);
     res.redirect("/user/signup");
@@ -28,6 +35,9 @@ router.post("/signup", async (req, res, next) => {
   } else if (emailExist.length >= 1) {
     req.flash("error", "Email đã tồn tại");
     res.redirect("/user/signup");
+  } else if (password !== repassword) {
+    req.flash("error", "Mật khẩu nhập lại không đúng");
+    res.redirect("/user/signup");
   } else {
     passport.authenticate("local.signup", {
       successRedirect: "../",
@@ -36,7 +46,6 @@ router.post("/signup", async (req, res, next) => {
     })(req, res, next);
   }
 });
-
 
 router.get("/login", userController.getLoginPage);
 router.post("/login", async (req, res, next) => {

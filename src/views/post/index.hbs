@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="/css/pagination.css">
     <style>
         * {
             font-family: 'Poppins', sans-serif;
@@ -21,8 +22,7 @@
     </style>
 </head>
 
-<body>
-
+<body style="padding-bottom: 30px;">
     <div class="container-lg main">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark py-5"
             style="  background: linear-gradient(to right, #5d4157, #a8caba); ">
@@ -69,12 +69,12 @@
             </div>
         </div>
         {{/if}}
-        {{#if msg}}
+        {{#if message}}
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-4 mx-auto">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{msg}}
+                        {{message}}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span arial-hidden="true">&times;</span>
                         </button>
@@ -87,6 +87,7 @@
             <div class="card-mx-auto danhsach">
                 <h1 class="text-center my-5">DANH SÁCH CÁC BÀI VIẾT</h1>
                 <div class="text-right mb-1">
+                    <p>Bạn đang xem bảng ghi {{banghitruoc}} -> bản ghi {{banghi}} trong {{total}} bản ghi</p>
                     <button type="button" class="px-4 btn btn-primary " data-toggle="modal" data-target="#addPost"><i
                             class="fas fa-plus"></i>
                     </button>
@@ -96,6 +97,7 @@
                     <table class="table table-bordered table-hover text-center text-capitalize  ">
                         <thead class="table-info">
                             <tr>
+                                <th scope="col">STT</th>
                                 <th scope="col">Tên Post</th>
                                 <th scope="col">Loại Post</th>
                                 <th scope="col">Ngày Tạo</th>
@@ -110,6 +112,7 @@
                         <tbody>
                             {{#each post}}
                             <tr>
+                                <td>{{add  @index ../page}}</td>
                                 <td>{{this.name_post}}</td>
                                 <td>{{this.cate_name}}</td>
                                 <td>{{ this.created_at}}</td>
@@ -136,25 +139,26 @@
                     </table>
                 </div>
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination text-right">
+            <nav aria-label="Page navigation ">
+                <ul class="pagination pagination-lg text-right">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <p class="page-link">{{page}}/{{nPages}}</p>
+                    </li>
+                    <li class="page-item" {{#unless can_go_prev}}style="pointer-events: none;" {{/unless}}>
+                        <a class="page-link" href="?page={{prev_value}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link " href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                    <li class="page-item" {{#unless can_go_next}}style="pointer-events: none;" {{/unless}}>
+                        <a class="page-link" href="?page={{next_value}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
                     </li>
                 </ul>
             </nav>
+            <div id="demo"></div>
         </div>
         <!-- Modal -->
         <div class="modal" id="addPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel"
@@ -251,6 +255,7 @@
             deleteForm.action = '/admin/post/delete/' + deleteID;
             deleteForm.submit();
         });
+
     </script>
 </body>
 

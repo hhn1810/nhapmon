@@ -6,10 +6,18 @@ const commentModel = require("../../models/comment.model");
 const fs = require("fs");
 const excel = require("exceljs");
 const helpers = require("../../lib/helpers");
-
+const multer = require("multer");
+const path = require("path");
 Handlebars.registerHelper("isNull", function (updated_at) {
   if (updated_at === null) return true;
   return false;
+});
+Handlebars.registerHelper("add", function (bien, page) {
+  if (page === 1) {
+    return bien + 1;
+  } else {
+    return bien + 1 + 5 * (page - 1);
+  }
 });
 class AdminControllers {
   // Hiển thị tất cả Category GET
@@ -185,7 +193,25 @@ class AdminControllers {
   //  POST
 
   async post(req, res) {
-    const post = await postModel.findCatName();
+    const PAGE_SIZE = 5;
+    let banghitruoc = 1;
+    if (isNaN(req.query.page)) res.redirect("/admin/post?page=1");
+    let page = +req.query.page || 1;
+    let banghi = page * PAGE_SIZE;
+    if (page < 0) page = 1;
+    const total = await postModel.count();
+    const nPages = Math.ceil(total / PAGE_SIZE);
+    if (page > nPages) res.redirect("/admin/post?page=" + nPages);
+    let offset = (page - 1) * PAGE_SIZE;
+
+    if (page == 1) {
+      banghitruoc = 1;
+    } else {
+      banghitruoc = (page - 1) * PAGE_SIZE + 1;
+    }
+    if (banghi > total) banghi = total;
+
+    const post = await postModel.findCatName(PAGE_SIZE, offset);
     post.forEach((element) => {
       const day = element.created_at;
       element.created_at =
@@ -219,7 +245,17 @@ class AdminControllers {
     res.render("post/index", {
       layout: false,
       post,
+      page,
+      total,
+      banghi,
+      banghitruoc,
+      nPages,
       success: req.flash("success"),
+      message: req.flash("message"),
+      prev_value: page - 1,
+      next_value: page + 1,
+      can_go_prev: page > 1,
+      can_go_next: page < nPages,
     });
   }
   getaddPost(req, res) {
@@ -259,10 +295,21 @@ class AdminControllers {
     }
   }
   async updatePost(req, res) {
+    const filetypes = /jpeg|jpg|png|gif/;
+    // Check ext
+    const extname = filetypes.test(
+      path.extname(req.file.originalname).toLowerCase()
+    );
+    // Check mime
+    const mimetype = filetypes.test(req.file.mimetype);
+
     const id = req.params.id;
     const { name_post, cate_id, title, content } = req.body;
     let slug = helpers.changeToSlug(name_post);
-    if (req.file !== undefined) {
+    if (!mimetype || !extname) {
+      req.flash("message", "Chỉ file ảnh");
+      res.redirect("../");
+    } else if (req.file !== undefined) {
       const image = req.file.filename;
       const newPost = {
         id,
@@ -339,67 +386,60 @@ class AdminControllers {
     res.redirect("back");
   }
   async thongkebaiviet(req, res) {
-    const post = await postModel.findCatNameAs();
-    console.log(post);
-    post.forEach((element) => {
-      const day = element.created_at;
-      element.created_at =
-        day.getDate() +
-        "/" +
-        (day.getMonth() + 1) +
-        "/" +
-        day.getFullYear() +
-        " " +
-        day.getHours() +
-        ":" +
-        day.getMinutes();
-    });
-    post.forEach((element) => {
-      if (element.updated_at === null) {
-        element.updated_at = "Chưa Cập Nhật";
-      } else {
-        let updated_atdate = element.updated_at.getDate();
-        let updated_atmonth = element.updated_at.getMonth() + 1;
-        let updated_atyear = element.updated_at.getFullYear();
-        element.updated_at =
-          updated_atdate + "/" + updated_atmonth + "/" + updated_atyear;
-      }
-    });
-    const jsonData = JSON.parse(JSON.stringify(post));
-    let workbook = new excel.Workbook();
-    let worksheet = workbook.addWorksheet("Thống Kê Bài Viết", {
-      properties: { tabColor: { argb: "FF00FF00" } },
-      pageSetup: { paperSize: 9, orientation: "landscape" },
-    });
-    worksheet.headerFooter.firstHeader = "THỐNG KÊ BÀI VIẾT";
-    worksheet.columns = [
-      { header: "Id", key: "id", width: 10 },
-      { header: "Tên Bài Viết", key: "name_post", width: 30 },
-      { header: "Loại Danh Mục", key: "cate_name", width: 30 },
-      { header: "Mô Tả Ngắn", key: "title", width: 30 },
-      { header: "Nội Dung", key: "content", width: 100 },
-      { header: "Ngày Tạo", key: "created_at", width: 30 },
-      { header: "Ngày Cập Nhật", key: "updated_at", width: 30 },
-      { header: "Số Bình Luận", key: "SoLuongCmt", width: 30 },
-    ];
-    worksheet.addRows(jsonData);
-    let day = new Date(Date.now());
-    const fileName =
-      "TKBaiViet" +
-      "_" +
-      day.getDate() +
-      "-" +
-      day.getMonth() +
-      "-" +
-      day.getFullYear() +
-      "_" +
-      day.getMilliseconds();
-    // Write to File
-    workbook.xlsx
-      .writeFile(`D:\\Blog-Nodejs-Express-Mysql\\src\\public\\${fileName}.xlsx`)
-      .then(function () {
-        res.download(`/Blog-Nodejs-Express-Mysql/src/public/${fileName}.xlsx`);
-      });
+    const slug = req.params.slug;
+    switch (slug) {
+      case "baiviet":
+        const post = await postModel.findCatNameAs();
+        post.forEach((element) => {
+          const day = element.created_at;
+          element.created_at =
+            day.getDate() +
+            "/" +
+            (day.getMonth() + 1) +
+            "/" +
+            day.getFullYear() +
+            " " +
+            day.getHours() +
+            " giờ : " +
+            day.getMinutes() +
+            " phút";
+        });
+        post.forEach((element) => {
+          if (element.updated_at === null) {
+            element.updated_at = "Chưa Cập Nhật";
+          } else {
+            let updated_atdate = element.updated_at.getDate();
+            let updated_atmonth = element.updated_at.getMonth() + 1;
+            let updated_atyear = element.updated_at.getFullYear();
+            element.updated_at =
+              updated_atdate + "/" + updated_atmonth + "/" + updated_atyear;
+          }
+        });
+        const jsonData = JSON.parse(JSON.stringify(post));
+        let workbook = new excel.Workbook();
+        let worksheet = workbook.addWorksheet("Thống Kê Bài Viết", {
+          properties: { tabColor: { argb: "FF00FF00" } },
+          pageSetup: { paperSize: 9, orientation: "landscape" },
+        });
+        worksheet.headerFooter.firstHeader = "THỐNG KÊ BÀI VIẾT";
+        worksheet.columns = [
+          { header: "Id", key: "id", width: 10 },
+          { header: "Tên Bài Viết", key: "name_post", width: 30 },
+          { header: "Loại Danh Mục", key: "cate_name", width: 30 },
+          { header: "Mô Tả Ngắn", key: "title", width: 30 },
+          { header: "Nội Dung", key: "content", width: 100 },
+          { header: "Ngày Tạo", key: "created_at", width: 30 },
+          { header: "Ngày Cập Nhật", key: "updated_at", width: 30 },
+          { header: "Số Bình Luận", key: "SoLuongCmt", width: 30 },
+        ];
+        worksheet.addRows(jsonData);
+        const fileName = "ThongKeSoLuongBaiViet";
+        // Write to File
+        workbook.xlsx.writeFile(`D:\\${fileName}.xlsx`).then(function () {
+          req.flash("success", "Tải file thành công , File ở ổ D");
+          res.redirect("/admin/post");
+        });
+    }
   }
 }
 

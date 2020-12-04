@@ -19,6 +19,12 @@ module.exports = {
   single: function (id) {
     return db.load(`SELECT * FROM ${TBL_COMMENT} WHERE id = ${id}`);
   },
+  thongke: function () {
+    return db.load(
+      "SELECT`comment_post`.*, `posts`.`name_post`,`users`.`username` FROM `comment_post`,`posts`,`users` WHERE `comment_post`.`user_id`=`users`.`id` and `comment_post`.`post_id` = `posts`.`id`"
+    );
+  },
+
   allWhere: function (col, role) {
     return db.loadWhere(TBL_COMMENT, role, col);
   },

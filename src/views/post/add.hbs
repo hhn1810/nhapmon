@@ -6,39 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">\
-    <script src="https://cdn.ckeditor.com/4.6.0/full-all/ckeditor.js"></script>
+
 </head>
 
 <body>
 
     <div class="container p-4 mt-5 bg-light border border-primary rounded">
         {{#if msg}}
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-md-4 mx-auto">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{msg}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span arial-hidden="true">&times;</span>
-                            </button>
-                        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{msg}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span arial-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
         {{/if}}
         <h1 class="text-center text-warning">Thêm Post Mới</h1>
         <form method="POST" action="/admin/post/add" enctype="multipart/form-data">
             <div class="form-group row">
                 <label for="name-post" class="col-sm-2 col-form-label">Tên Post:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name_post" name="name_post" placeholder="Nhập tên post" required>
+                    <input type="text" class="form-control" id="name_post" name="name_post" placeholder="Nhập tên post"
+                        required>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="custom-select" class="col-sm-2 col-form-label">Loại Category:</label>
                 <div class="col-sm-10">
-                    <select class="custom-select" id="custom-select" name="cate"required>
-                        {{#each lcCategory}}     
+                    <select class="custom-select" id="custom-select" name="cate" required>
+                        {{#each lcCategory}}
                         <option value="{{this.id}}">{{this.cate_name}}</option>
                         {{/each}}
                     </select>
@@ -72,7 +73,7 @@
     {{!-- <script type="text/javascript">
         CKEDITOR.replace('editor', {
             filebrowserUploadUrl: '../uploader',
-        
+
         });
     </script> --}}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -91,9 +92,7 @@
             var htmlObject = $(value);
             $("div#test").html(value);
         });
-        function callme() {
-            return htmlObject;
-        }
+
     </script>
 </body>
 

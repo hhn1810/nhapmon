@@ -4,6 +4,11 @@ module.exports = {
   all: function () {
     return db.load(`SELECT * FROM ${TBL_POST}`);
   },
+  tatca: function (limit, offset) {
+    return db.load(
+      `SELECT * FROM ${TBL_POST}  LIMIT ${limit} OFFSET ${offset}`
+    );
+  },
   single: function (id) {
     return db.load(`SELECT * FROM ${TBL_POST} WHERE id = ${id}`);
   },
@@ -26,9 +31,14 @@ module.exports = {
     };
     return db.delete(TBL_POST, condition);
   },
-  findCatName: function () {
+  findCatName: function (limit, offset) {
     return db.load(
-      "SELECT `posts`.`id`,`posts`.`view`,`name_post`,`title`,`posts`.`slug`,`image`,`content`,`posts`.`created_at`,`posts`.`updated_at`,`category`.`cate_name`  FROM `posts`,`category` WHERE `category`.`id`=`posts`.`cate_id`"
+      `SELECT posts.*,category.cate_name  FROM posts,category WHERE category.id=posts.cate_id ORDER BY posts.view desc LIMIT ${limit} OFFSET ${offset} `
+    );
+  },
+  findCatName1: function () {
+    return db.load(
+      `SELECT posts.*,category.cate_name  FROM posts,category WHERE category.id=posts.cate_id`
     );
   },
   findCatNameAs: function () {

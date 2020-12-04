@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 const uploadImage = multer({
   storage,
 }).single("image");
-
 // ----------------------------- Xử lý Category -----------------------
 
 // Hiển thị tất cả Category
@@ -40,7 +39,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 router.get("/user/delete/:id", isAdmin, adminController.delUser);
-router.get("/thongkebaiviet", isAdmin, adminController.thongkebaiviet);
+router.get("/thongke/:slug", isAdmin, adminController.thongkebaiviet);
 router.get("/user", isAdmin, adminController.user);
 router.get("/post", isAdmin, adminController.post);
 router.get("/comment", isAdmin, adminController.comment);
