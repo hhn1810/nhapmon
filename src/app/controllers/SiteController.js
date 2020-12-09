@@ -57,6 +57,7 @@ class SiteControllers {
   }
   async showPost(req, res) {
     const slug = req.params.slug;
+    let userid;
     const post = await pool.query("SELECT * FROM posts WHERE slug = ?", slug);
     const view = post[0].view + 1;
     const newPost = {
@@ -66,12 +67,24 @@ class SiteControllers {
     await postModel.update(newPost);
     const message = await commentModel.allDK(post[0].id);
     const soLuong = await commentModel.soLuong(post[0].id);
+    if (req.user !== undefined) {
+      userid = req.user.id;
+    } else {
+      userid = 0;
+    }
     res.render("single_post", {
       soLuong: soLuong[0],
       comments: message,
       post: post[0],
       comment: req.flash("comment"),
+      userid,
+      success: req.flash("success"),
     });
+  }
+  async deleteComment(req, res) {
+    await commentModel.delete(req.params.id);
+    req.flash("success", "Xóa Bình Luận Thành Công ");
+    res.redirect("back");
   }
   async showCate(req, res) {
     const page = +req.query.page || 1;

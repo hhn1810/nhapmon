@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">\
-    <script src="https://cdn.ckeditor.com/4.6.0/full-all/ckeditor.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -34,7 +33,7 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-4 mx-auto">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{msg}}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span arial-hidden="true">&times;</span>
@@ -100,6 +99,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.15.1/full-all/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
 </body>
 
 </html>

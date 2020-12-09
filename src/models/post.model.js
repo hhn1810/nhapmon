@@ -33,7 +33,7 @@ module.exports = {
   },
   findCatName: function (limit, offset) {
     return db.load(
-      `SELECT posts.*,category.cate_name  FROM posts,category WHERE category.id=posts.cate_id ORDER BY posts.view desc LIMIT ${limit} OFFSET ${offset} `
+      `SELECT posts.*,category.cate_name  FROM posts,category WHERE category.id=posts.cate_id ORDER BY posts.view desc , posts.created_at desc, posts.updated_at desc LIMIT ${limit} OFFSET ${offset} `
     );
   },
   findCatName1: function () {

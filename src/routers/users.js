@@ -31,7 +31,7 @@ router.post("/signup", async (req, res, next) => {
     res.redirect("/user/signup");
   } else if (usernameExist.length >= 1) {
     req.flash("error", "Username đã tồn tại");
-    res.redirect("/user/sigup");
+    res.redirect("/user/signup");
   } else if (emailExist.length >= 1) {
     req.flash("error", "Email đã tồn tại");
     res.redirect("/user/signup");
@@ -41,7 +41,7 @@ router.post("/signup", async (req, res, next) => {
   } else {
     passport.authenticate("local.signup", {
       successRedirect: "../",
-      failureRedirect: "/user/singup",
+      failureRedirect: "/user/signup",
       failureFlash: true,
     })(req, res, next);
   }

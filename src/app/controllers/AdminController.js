@@ -22,7 +22,6 @@ Handlebars.registerHelper("add", function (bien, page) {
 class AdminControllers {
   // Hiển thị tất cả Category GET
   async cate(req, res) {
-    console.log(req.user);
     const category = await categoryModel.all();
     category.forEach((element) => {
       const day = element.created_at;
@@ -96,7 +95,6 @@ class AdminControllers {
   async updateCate(req, res) {
     const { id } = req.params;
     const cate_name = req.body.category;
-    console.log(cate_name);
     const slug = helpers.changeToSlug(cate_name);
     const cate = await categoryModel.allWhere("cate_name", cate_name);
     if (cate[0] === undefined) {
@@ -147,9 +145,34 @@ class AdminControllers {
   }
   // BÊN USER
   async user(req, res) {
-    const users = await userModel.allWhere("role", "Author");
+    const PAGE_SIZE = 5;
+    let banghitruoc = 1;
+    if (isNaN(req.query.page)) res.redirect("/admin?page=1");
+    let page = +req.query.page || 1;
+    let banghi = page * PAGE_SIZE;
+    if (page < 0) page = 1;
+    const total = await userModel.countUser("role", "Author");
+    const nPages = Math.ceil(total[0].total / PAGE_SIZE);
+    if (page > nPages) res.redirect("/admin?page=" + nPages);
+    let offset = (page - 1) * PAGE_SIZE;
+
+    if (page == 1) {
+      banghitruoc = 1;
+    } else {
+      banghitruoc = (page - 1) * PAGE_SIZE + 1;
+    }
+    if (banghi > total) banghi = total;
+    const users = await userModel.allWhereLimit(
+      "role",
+      "Author",
+      PAGE_SIZE,
+      offset
+    );
     users.forEach((element) => {
       const day = element.created_at;
+      let hours = day.getHours() <= 9 ? "0" + day.getHours() : day.getHours();
+      let minutes =
+        day.getMinutes() <= 9 ? "0" + day.getMinutes() : day.getMinutes();
       element.created_at =
         day.getDate() +
         "/" +
@@ -157,15 +180,18 @@ class AdminControllers {
         "/" +
         day.getFullYear() +
         " " +
-        day.getHours() +
+        hours +
         ":" +
-        day.getMinutes();
+        minutes;
     });
     users.forEach((element) => {
       if (element.updated_at === null) {
         element.updated_at = "Chưa Cập Nhật";
       } else {
         const day = element.updated_at;
+        let hours = day.getHours() <= 9 ? "0" + day.getHours() : day.getHours();
+        let minutes =
+          day.getMinutes() <= 9 ? "0" + day.getMinutes() : day.getMinutes();
         element.updated_at =
           day.getDate() +
           "/" +
@@ -173,15 +199,25 @@ class AdminControllers {
           "/" +
           day.getFullYear() +
           " " +
-          day.getHours() +
+          hours +
           ":" +
-          day.getMinutes();
+          minutes;
       }
     });
     res.render("admin/index", {
       layout: false,
       users,
+      page,
+      total: total[0].total,
+      banghi,
+      banghitruoc,
+      nPages,
       success: req.flash("success"),
+      message: req.flash("message"),
+      prev_value: page - 1,
+      next_value: page + 1,
+      can_go_prev: page > 1,
+      can_go_next: page < nPages,
     });
   }
   async delUser(req, res) {
@@ -214,6 +250,9 @@ class AdminControllers {
     const post = await postModel.findCatName(PAGE_SIZE, offset);
     post.forEach((element) => {
       const day = element.created_at;
+      let hours = day.getHours() <= 9 ? "0" + day.getHours() : day.getHours();
+      let minutes =
+        day.getMinutes() <= 9 ? "0" + day.getMinutes() : day.getMinutes();
       element.created_at =
         day.getDate() +
         "/" +
@@ -221,15 +260,18 @@ class AdminControllers {
         "/" +
         day.getFullYear() +
         " " +
-        day.getHours() +
+        hours +
         ":" +
-        day.getMinutes();
+        minutes;
     });
     post.forEach((element) => {
       if (element.updated_at === null) {
         element.updated_at = "Chưa Cập Nhật";
       } else {
         const day = element.updated_at;
+        let hours = day.getHours() <= 9 ? "0" + day.getHours() : day.getHours();
+        let minutes =
+          day.getMinutes() <= 9 ? "0" + day.getMinutes() : day.getMinutes();
         element.updated_at =
           day.getDate() +
           "/" +
@@ -237,9 +279,9 @@ class AdminControllers {
           "/" +
           day.getFullYear() +
           " " +
-          day.getHours() +
+          hours +
           ":" +
-          day.getMinutes();
+          minutes;
       }
     });
     res.render("post/index", {
@@ -291,50 +333,61 @@ class AdminControllers {
       res.redirect("../post");
     } else {
       req.flash("message", "Tên Post Không Được Trùng");
-      res.redirect("add");
+      res.redirect("back");
     }
   }
   async updatePost(req, res) {
-    const filetypes = /jpeg|jpg|png|gif/;
-    // Check ext
-    const extname = filetypes.test(
-      path.extname(req.file.originalname).toLowerCase()
-    );
-    // Check mime
-    const mimetype = filetypes.test(req.file.mimetype);
-
     const id = req.params.id;
+    const post = await postModel.allWhere("id", id);
     const { name_post, cate_id, title, content } = req.body;
     let slug = helpers.changeToSlug(name_post);
-    if (!mimetype || !extname) {
-      req.flash("message", "Chỉ file ảnh");
-      res.redirect("../");
-    } else if (req.file !== undefined) {
-      const image = req.file.filename;
-      const newPost = {
-        id,
-        cate_id,
-        name_post,
-        title,
-        slug,
-        image,
-        content,
-      };
-      await postModel.update(newPost);
-      req.flash("success", "Cập Nhật Thành Công");
-      res.redirect("../");
+    const check = await postModel.allWhere("slug", slug);
+    if (
+      check !== undefined &&
+      (post[0].slug === slug || post[0].slug !== check.slug)
+    ) {
+      if (req.file !== undefined) {
+        const image = req.file.filename;
+        const filetypes = /jpeg|jpg|png|gif/;
+        // Check ext
+        const extname = filetypes.test(
+          path.extname(req.file.originalname).toLowerCase()
+        );
+        // Check mime
+        const mimetype = filetypes.test(req.file.mimetype);
+        if (!mimetype || !extname) {
+          req.flash("message", "Chỉ file ảnh");
+          res.redirect("../");
+        } else {
+          const newPost = {
+            id,
+            cate_id,
+            name_post,
+            title,
+            slug,
+            image,
+            content,
+          };
+          await postModel.update(newPost);
+          req.flash("success", "Cập Nhật Thành Công");
+          res.redirect("../");
+        }
+      } else {
+        const newPost = {
+          id,
+          cate_id,
+          name_post,
+          title,
+          slug,
+          content,
+        };
+        await postModel.update(newPost);
+        req.flash("success", "Cập Nhật Thành Công");
+        res.redirect("../");
+      }
     } else {
-      const newPost = {
-        id,
-        cate_id,
-        name_post,
-        title,
-        slug,
-        content,
-      };
-      await postModel.update(newPost);
-      req.flash("success", "Cập Nhật Thành Công");
-      res.redirect("../");
+      req.flash("message", "Tên Post Không Được Trùng");
+      res.redirect("back");
     }
   }
   async delPost(req, res) {
@@ -346,7 +399,24 @@ class AdminControllers {
 
   // Comment
   async comment(req, res) {
-    const comment = await commentModel.all();
+    const PAGE_SIZE = 5;
+    let banghitruoc = 1;
+    if (isNaN(req.query.page)) res.redirect("/admin/comment?page=1");
+    let page = +req.query.page || 1;
+    let banghi = page * PAGE_SIZE;
+    if (page < 0) page = 1;
+    const total = await commentModel.count();
+    const nPages = Math.ceil(total / PAGE_SIZE);
+    if (page > nPages) res.redirect("/admin/comment?page=" + nPages);
+    let offset = (page - 1) * PAGE_SIZE;
+
+    if (page == 1) {
+      banghitruoc = 1;
+    } else {
+      banghitruoc = (page - 1) * PAGE_SIZE + 1;
+    }
+    if (banghi > total) banghi = total;
+    const comment = await commentModel.allLimit(PAGE_SIZE, offset);
     comment.forEach((element) => {
       const day = element.created_at;
       element.created_at =
@@ -377,7 +447,21 @@ class AdminControllers {
           day.getMinutes();
       }
     });
-    res.render("admin/comment", { layout: false, comment });
+    res.render("admin/comment", {
+      layout: false,
+      comment,
+      page,
+      total,
+      banghi,
+      banghitruoc,
+      nPages,
+      success: req.flash("success"),
+      message: req.flash("message"),
+      prev_value: page - 1,
+      next_value: page + 1,
+      can_go_prev: page > 1,
+      can_go_next: page < nPages,
+    });
   }
   async delComment(req, res) {
     const id = req.params.id;
@@ -386,6 +470,10 @@ class AdminControllers {
     res.redirect("back");
   }
   async thongkebaiviet(req, res) {
+    let jsonData;
+    let workbook;
+    let worksheet;
+    let fileName;
     const slug = req.params.slug;
     switch (slug) {
       case "baiviet":
@@ -415,9 +503,9 @@ class AdminControllers {
               updated_atdate + "/" + updated_atmonth + "/" + updated_atyear;
           }
         });
-        const jsonData = JSON.parse(JSON.stringify(post));
-        let workbook = new excel.Workbook();
-        let worksheet = workbook.addWorksheet("Thống Kê Bài Viết", {
+        jsonData = JSON.parse(JSON.stringify(post));
+        workbook = new excel.Workbook();
+        worksheet = workbook.addWorksheet("Thống Kê Bài Viết", {
           properties: { tabColor: { argb: "FF00FF00" } },
           pageSetup: { paperSize: 9, orientation: "landscape" },
         });
@@ -433,12 +521,112 @@ class AdminControllers {
           { header: "Số Bình Luận", key: "SoLuongCmt", width: 30 },
         ];
         worksheet.addRows(jsonData);
-        const fileName = "ThongKeSoLuongBaiViet";
+        fileName = "ThongKeSoLuongBaiViet";
         // Write to File
         workbook.xlsx.writeFile(`D:\\${fileName}.xlsx`).then(function () {
           req.flash("success", "Tải file thành công , File ở ổ D");
           res.redirect("/admin/post");
         });
+        break;
+      case "binhluan":
+        const binhluan = await commentModel.all();
+        binhluan.forEach((element) => {
+          const day = element.created_at;
+          element.created_at =
+            day.getDate() +
+            "/" +
+            (day.getMonth() + 1) +
+            "/" +
+            day.getFullYear() +
+            " " +
+            day.getHours() +
+            " giờ : " +
+            day.getMinutes() +
+            " phút";
+        });
+        binhluan.forEach((element) => {
+          if (element.updated_at === null) {
+            element.updated_at = "Chưa Cập Nhật";
+          } else {
+            let updated_atdate = element.updated_at.getDate();
+            let updated_atmonth = element.updated_at.getMonth() + 1;
+            let updated_atyear = element.updated_at.getFullYear();
+            element.updated_at =
+              updated_atdate + "/" + updated_atmonth + "/" + updated_atyear;
+          }
+        });
+        jsonData = JSON.parse(JSON.stringify(binhluan));
+        workbook = new excel.Workbook();
+        worksheet = workbook.addWorksheet("Thống Kê Bình Luận", {
+          properties: { tabColor: { argb: "FF00FF00" } },
+          pageSetup: { paperSize: 9, orientation: "landscape" },
+        });
+        worksheet.headerFooter.firstHeader = "THỐNG KÊ BÌNH LUẬN";
+        worksheet.columns = [
+          { header: "Id", key: "id", width: 10 },
+          { header: "Tài Khoản Người Dùng", key: "username", width: 30 },
+          { header: "Tên Bài Viết", key: "name_post", width: 30 },
+          { header: "Nội Dung Bình Luận", key: "comment", width: 30 },
+          { header: "Ngày Tạo", key: "created_at", width: 30 },
+          { header: "Ngày Cập Nhật", key: "updated_at", width: 30 },
+        ];
+        worksheet.addRows(jsonData);
+        fileName = "ThongKeSoLuongBinhLuan";
+        // Write to File
+        workbook.xlsx.writeFile(`D:\\${fileName}.xlsx`).then(function () {
+          req.flash("success", "Tải file thành công , File ở ổ D");
+          res.redirect("/admin/comment");
+        });
+        break;
+      case "user":
+        const user = await userModel.allWhere("role", "Author");
+        user.forEach((element) => {
+          const day = element.created_at;
+          element.created_at =
+            day.getDate() +
+            "/" +
+            (day.getMonth() + 1) +
+            "/" +
+            day.getFullYear() +
+            " " +
+            day.getHours() +
+            " giờ : " +
+            day.getMinutes() +
+            " phút";
+        });
+        user.forEach((element) => {
+          if (element.updated_at === null) {
+            element.updated_at = "Chưa Cập Nhật";
+          } else {
+            let updated_atdate = element.updated_at.getDate();
+            let updated_atmonth = element.updated_at.getMonth() + 1;
+            let updated_atyear = element.updated_at.getFullYear();
+            element.updated_at =
+              updated_atdate + "/" + updated_atmonth + "/" + updated_atyear;
+          }
+        });
+        jsonData = JSON.parse(JSON.stringify(user));
+        workbook = new excel.Workbook();
+        worksheet = workbook.addWorksheet("Thống Kê Người Dùng", {
+          properties: { tabColor: { argb: "FF00FF00" } },
+          pageSetup: { paperSize: 9, orientation: "landscape" },
+        });
+        worksheet.headerFooter.firstHeader = "THỐNG KÊ NGƯỜI DÙNG";
+        worksheet.columns = [
+          { header: "Id", key: "id", width: 10 },
+          { header: "Tài Khoản Người Dùng", key: "username", width: 30 },
+          { header: "Email", key: "email", width: 30 },
+          { header: "Ngày Tạo", key: "created_at", width: 30 },
+          { header: "Ngày Cập Nhật", key: "updated_at", width: 30 },
+        ];
+        worksheet.addRows(jsonData);
+        fileName = "ThongKeSoLuongNguoiDung";
+        // Write to File
+        workbook.xlsx.writeFile(`D:\\${fileName}.xlsx`).then(function () {
+          req.flash("success", "Tải file thành công , File ở ổ D");
+          res.redirect("/admin");
+        });
+        break;
     }
   }
 }

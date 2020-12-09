@@ -36,7 +36,6 @@ class UserControllers {
       res.render("users/update-email", {
         layout: false,
         users: users[0],
-        err: err,
       });
     } else if (emailExist.length >= 1) {
       if (users[0].email != email) {
@@ -63,7 +62,11 @@ class UserControllers {
   //     res.render('users/profile',{layout: false,users: users[0]});
   // }
   async showupdatePassword(req, res) {
-    res.render("users/update-password", { layout: false, user: req.user });
+    res.render("users/update-password", {
+      layout: false,
+      user: req.user,
+      err: req.flash("error"),
+    });
   }
   async comment(req, res) {
     const newComment = {
@@ -92,11 +95,11 @@ class UserControllers {
       res.redirect("/user/profile");
     } else {
       const users = await userModel.single(id);
-      req.flash("error", "Mật khẩu không đúng");
       res.render("users/update-password", {
         layout: false,
         users: users[0],
         user: req.user,
+        err: "Mật khẩu không đúng",
       });
     }
   }

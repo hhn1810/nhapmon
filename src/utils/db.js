@@ -26,6 +26,28 @@ module.exports = {
       });
     });
   },
+  countWhere: function (table, entity, col) {
+    return new Promise(function (resolve, reject) {
+      const sql = `SELECT COUNT(*) as total FROM ${table} WHERE ${col} = ?`;
+      pool.query(sql, entity, function (error, results, fields) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
+  loadWhereLimit: function (table, entity, col, limit, offset) {
+    return new Promise(function (resolve, reject) {
+      const sql = `SELECT * FROM ${table} WHERE ${col} = ? LIMIT ${limit} OFFSET ${offset}`;
+      pool.query(sql, entity, function (error, results, fields) {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    });
+  },
   add: function (table, entity) {
     return new Promise(function (resolve, reject) {
       const sql = `INSERT INTO ${table} SET ?`;

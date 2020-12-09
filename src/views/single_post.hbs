@@ -30,7 +30,7 @@
                         <div class="post-content">
                             <p class="post-date">{{timeago post.created_at}}</p>
                             <h4 class="post-title">{{post.title}}</h4>
-                            <p>{{post.content}}</p>
+                            <p>{{{post.content}}}</p>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@
                                                 <a href="#" class="btn btn-light comment-date"
                                                     style="color: #e59f80; line-height: 1.5" id="delete"
                                                     data-toggle="modal" data-target="#deleteModel"
-                                                    data-id="{{../lcuser.id}}" data-comment="{{this.id}}"> Xóa</a>
+                                                    data-id="{{../lcuser.id}}" data-comment="{{this.id}}">Xóa</a>
                                                 {{/if}}
                                             </div>
                                             <div class=" card-body">
@@ -108,56 +108,7 @@
                 </div>
             </div>
 
-            <!-- Blog Sidebar Area -->
-            <div class="col-12 col-sm-9 col-md-6 col-lg-4">
-                <div class="post-sidebar-area">
-
-                    <!-- ##### Single Widget Area ##### -->
-                    <div class="single-widget-area mt-0">
-                        <!-- Title -->
-                        <div class="widget-title">
-                            <h6>Danh Mục</h6>
-                        </div>
-                        <ol class="foode-catagories">
-                            {{#each lcAllCateWithDetail}}
-                            <li><a href="/cate/{{this.slug}}"><span><i class="fa fa-stop"
-                                            aria-hidden="true"></i>{{this.cate_name}}</span>
-                                    {{#if SoLuong}}
-                                    <span>({{this.SoLuong}})</span></a></li>
-                            {{else}}
-                            <span>(0)</span></a></li>
-                            {{/if}}
-                            {{/each}}
-                        </ol>
-                    </div>
-
-                    <!-- ##### Single Widget Area ##### -->
-                    <div class="single-widget-area">
-                        <!-- Title -->
-                        <div class="widget-title">
-                            <h6>Latest Posts</h6>
-                        </div>
-
-                        {{#each lcpostTang}}
-                        <!-- Single Latest Posts -->
-                        <div class="single-latest-post d-flex">
-                            <div class="post-thumb">
-                                <a href="/post/{{this.slug}}"><img src="/uploads/img_titles/{{this.image}}" alt=""></a>
-                            </div>
-                            <div class="post-content">
-                                <a href="/post/{{this.slug}}" class="post-title">
-                                    <h6>{{this.name_post}}</h6>
-                                    <a href="#"><i class="fa fa-eye"></i> {{this.view}}</a>
-                                </a>
-                                <a href="/post/{{this.slug}}"
-                                    class="post-author"><span></span>{{timeago this.created_at}}</a>
-                            </div>
-                        </div>
-                        {{/each}}
-
-                    </div>
-                </div>
-            </div>
+            {{> sidebar}}
         </div>
         <div class="modal" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel"
             aria-hidden="true">

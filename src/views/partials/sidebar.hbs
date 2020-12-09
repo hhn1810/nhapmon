@@ -1,0 +1,66 @@
+<!-- Blog Sidebar Area -->
+
+            <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                <div class="post-sidebar-area">
+                 <div class="single-widget-area">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Thông Tin</h6>
+                        </div>
+                        <!-- Thumbnail -->
+                        <div class="about-thumbnail">
+                            <img src="/img/blog-img/me.jpg" alt="" style="image-rendering: pixelated;">
+                        </div>
+                        <!-- Content -->
+                        <div class="widget-content text-center">
+                            <img src="/img/blog-img/chuki.png" alt="">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                incididunt</p>
+                        </div>
+                    </div>
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area mt-0">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Danh Mục</h6>
+                        </div>
+                        <ol class="foode-catagories">
+                            {{#each lcAllCateWithDetail}}
+                            <li><a href="/cate/{{this.slug}}"><span><i class="fa fa-stop"
+                                            aria-hidden="true"></i>{{this.cate_name}}</span>
+                                    {{#if SoLuong}}
+                                    <span>({{this.SoLuong}})</span></a></li>
+                            {{else}}
+                            <span>(0)</span></a></li>
+                            {{/if}}
+                            {{/each}}
+                        </ol>
+                    </div>
+
+                    <!-- ##### Single Widget Area ##### -->
+                    <div class="single-widget-area">
+                        <!-- Title -->
+                        <div class="widget-title">
+                            <h6>Các bài viết mới nhất</h6>
+                        </div>
+
+                        {{#each lcpostTang}}
+                        <!-- Single Latest Posts -->
+                        <div class="single-latest-post d-flex">
+                            <div class="post-thumb">
+                                <a href="/post/{{this.slug}}"><img src="/uploads/img_titles/{{this.image}}" alt=""></a>
+                            </div>
+                            <div class="post-content">
+                                <a href="/post/{{this.slug}}" class="post-title">
+                                    <h6>{{this.name_post}}</h6>
+                                    <a href="#"><i class="fa fa-eye"></i> {{this.view}}</a>
+                                </a>
+                                <a href="/post/{{this.slug}}"
+                                    class="post-author"><span></span>{{timeago this.created_at}}</a>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                    </div>
+                </div>
+            </div>
